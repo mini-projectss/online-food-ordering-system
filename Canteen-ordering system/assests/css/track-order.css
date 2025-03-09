@@ -1,0 +1,190 @@
+/* Global Styles */
+body {
+    font-family: Arial, sans-serif;
+    background-image: url('/assests/images/bg_4.webp');
+    /* Set Background Image */
+    background-size: cover;
+    background-position: center;
+    margin: 0;
+    padding: 0;
+}
+
+/* Navbar Styling */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 30px;
+    margin: 15px 20px;
+    /* Space from top, left, and right */
+    background: rgba(0, 0, 0, 0.7);
+    /* Transparent effect */
+    /* backdrop-filter: blur(10px); */
+    /* Blur effect */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    /* Rounded corners */
+}
+
+/* Logo */
+.logo {
+    font-size: 24px;
+    font-weight: bold;
+    color: #ffffff;
+}
+
+/* Navigation Links */
+.nav-links {
+    list-style: none;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.nav-links a {
+    text-decoration: none;
+    font-weight: bold;
+    color: rgb(255, 255, 255);
+    padding: 8px;
+    transition: color 0.3s ease;
+}
+
+.nav-links a:hover {
+    color: #9d3c1f;
+}
+
+/* Profile Dropdown */
+/* Profile Dropdown */
+.profile-dropdown {
+    position: relative;
+    cursor: pointer;
+}
+
+.profile-dropdown .dropdown {
+    display: none;
+    position: absolute;
+    right: 0;
+    background: rgb(255, 255, 255);
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    min-width: 150px;
+    text-align: left;
+    padding: 0;
+    list-style: none;
+    z-index: 10;
+}
+
+.profile-dropdown .dropdown li {
+    padding: 10px;
+}
+
+.profile-dropdown .dropdown a {
+    display: block;
+    text-decoration: none;
+    color: black;
+    padding: 10px;
+    transition: background 0.3s;
+}
+
+.profile-dropdown .dropdown a:hover {
+    background: #ff5722;
+    color: white;
+}
+
+/* Show dropdown on hover */
+.profile-dropdown:hover .dropdown {
+    display: block;
+}
+/* Show dropdown on hover */
+.profile-dropdown:hover .profile-dropdown-content {
+    display: block;
+}
+
+/* Hamburger Menu for Small Screens */
+.hamburger {
+    display: none;
+    font-size: 25px;
+    cursor: pointer;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .nav-links {
+        display: none;
+        flex-direction: column;
+        position: absolute;
+        top: 70px;
+        right: 20px;
+        background: rgb(0, 0, 0);
+        border-radius: 10px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        padding: 10px;
+        width: 200px;
+    }
+
+    .nav-links.active {
+        display: flex;
+    }
+
+    .hamburger {
+        display: block;
+    }
+}
+
+/* Track Order Container */
+.track-order-container {
+    max-width: 500px;
+    background: white;
+    padding: 20px;
+    margin: 100px auto;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+.order-summary,
+.order-status {
+    margin-bottom: 20px;
+    text-align: left;
+}
+
+#order-items {
+    background: #ffecb3;
+    padding: 10px;
+    border-radius: 8px;
+    margin-bottom: 10px;
+}
+
+/* Back Button */
+.back-btn {
+    display: inline-block;
+    background: #ff5722;
+    color: white;
+    text-decoration: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    margin-top: 15px;
+}
+
+.back-btn:hover {
+    background: #e64a19;
+}
+
+/* Responsive */
+@media screen and (max-width: 600px) {
+    .navbar {
+        flex-direction: column;
+        align-items: flex-start;
+        height: auto;
+    }
+
+    .nav-links {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .track-order-container {
+        width: 90%;
+        margin: 80px auto;
+    }
+}

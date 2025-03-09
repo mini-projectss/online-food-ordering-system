@@ -1,0 +1,203 @@
+/* Global Styling */
+/* Apply Background Image to Whole Page */
+body {
+    font-family: Arial, sans-serif;
+    background: url('../images/bgimageauth.jpeg') no-repeat center center fixed;
+    /* Set Background Image */
+    background-size: cover;
+    /* Ensure it covers the whole page */
+    margin: 0;
+    padding: 0;
+}
+/* Navbar Styling */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 30px;
+    margin: 15px 20px;
+    /* Space from top, left, and right */
+    background: rgba(0, 0, 0, 0.5);
+    /* Transparent effect */
+    /* backdrop-filter: blur(10px); */
+    /* Blur effect */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    /* Rounded corners */
+}
+
+/* Everything else remains the same */
+/* Logo */
+.logo {
+    font-size: 24px;
+    font-weight: bold;
+    color: #ffffff;
+}
+
+/* Navigation Links */
+.nav-links {
+    list-style: none;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.nav-links a {
+    text-decoration: none;
+    font-weight: bold;
+    color: rgb(255, 255, 255);
+    padding: 8px;
+    transition: color 0.3s ease;
+}
+
+.nav-links a:hover {
+    color: #9d3c1f;
+}
+
+/* Profile Dropdown */
+.profile-dropdown {
+    position: relative;
+    cursor: pointer;
+}
+
+.profile-dropdown-content {
+    display: none;
+    position: absolute;
+    right: 0;
+    background: rgb(255, 255, 255);
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    min-width: 150px;
+    text-align: center;
+    overflow: hidden;
+}
+
+.profile-dropdown-content a {
+    display: block;
+    padding: 10px;
+    text-decoration: none;
+    color: black;
+    transition: background 0.3s;
+}
+
+.profile-dropdown-content a:hover {
+    background: #ff5722;
+    color: rgb(255, 255, 255);
+}
+
+/* Show dropdown on hover */
+.profile-dropdown:hover .profile-dropdown-content {
+    display: block;
+}
+
+/* Hamburger Menu for Small Screens */
+.hamburger {
+    display: none;
+    font-size: 25px;
+    cursor: pointer;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .nav-links {
+        display: none;
+        flex-direction: column;
+        position: absolute;
+        top: 70px;
+        right: 20px;
+        background: rgb(0, 0, 0);
+        border-radius: 10px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        padding: 10px;
+        width: 200px;
+    }
+
+    .nav-links.active {
+        display: flex;
+    }
+
+    .hamburger {
+        display: block;
+    }
+}
+/* Payment Page Styling */
+.payment-container {
+    max-width: 500px;
+    background: white;
+    padding: 20px;
+    margin: 100px auto;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+.order-summary,
+.payment-methods {
+    margin-bottom: 20px;
+    text-align: left;
+}
+
+#order-items {
+    background: #ffecb3;
+    padding: 10px;
+    border-radius: 8px;
+    margin-bottom: 10px;
+}
+
+.payment-methods label {
+    display: block;
+    margin: 10px 0;
+}
+
+/* Shared Button Styling */
+.payment-btn {
+    background-color: #000000;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 5px;
+    width: 100%;
+    margin-top: 10px;
+    transition: background-color 0.3s ease;
+}
+
+/* Button when hovered */
+.payment-btn:hover {
+    background-color: #e64a19;
+}
+
+/* Disabled button styling */
+.payment-btn:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+}
+
+/* Success Container Styling */
+.success-container {
+    max-width: 400px;
+    background: white;
+    padding: 20px;
+    margin: 100px auto;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+h2 {
+    color: #4CAF50;
+}
+
+.track-btn {
+    display: inline-block;
+    background: #ff5722;
+    color: white;
+    text-decoration: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    margin-top: 15px;
+}
+
+.track-btn:hover {
+    background: #e64a19;
+}

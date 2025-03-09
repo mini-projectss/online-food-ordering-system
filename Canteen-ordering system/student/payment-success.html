@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment Success | College Canteen</title>
+    <link rel="stylesheet" href="../assests/css/payment.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="logo">Canteen 🍽️</div>
+        <ul class="nav-links">
+            <li><a href="menu.html">Menu</a></li>
+            <li><a href="cart.html">🛒 Cart</a></li>
+            <li><a href="track-order.html">📦 Order Status</a></li>
+            <li class="profile-dropdown">
+                <a href="profile.html">👤 Profile ▾</a>
+                <ul class="dropdown">
+                    <li><a href="profile.html">View Profile</a></li>
+                    <li><a href="#" id="logout">🚪 Logout</a></li>
+                </ul>
+            </li>
+        </ul>
+    </nav>
+
+    <!-- Payment Success Container -->
+    <div class="success-container">
+        <h2>✅ Payment Successful!</h2>
+        <p>Thank you for your order. Your payment has been received.</p>
+        <p>Redirecting to order status...</p>
+        <a href="track-order.html" class="track-btn">Go to Order Status</a>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            // Get the payment status
+            let paymentStatus = localStorage.getItem("paymentStatus");
+            if (paymentStatus) {
+                document.getElementById("payment-status").textContent = `Payment Status: ${paymentStatus}`;
+            } else {
+                document.getElementById("payment-status").textContent = "Payment Status: Not Found";
+            }
+
+        });
+    </script>
+</body>
+</html>

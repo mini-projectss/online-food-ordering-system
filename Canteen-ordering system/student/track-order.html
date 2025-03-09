@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Status | College Canteen</title>
+    <link rel="stylesheet" href="../assests/css/track-order.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="logo">Canteen 🍽️</div>
+        <ul class="nav-links">
+            <li><a href="menu.html">Menu</a></li>
+            <li><a href="cart.html">🛒 Cart</a></li>
+            <li><a href="track-order.html">📦 Order Status</a></li>
+            <li class="profile-dropdown">
+                <a href="profile.html">👤 Profile ▾</a>
+                <ul class="dropdown">
+                    <li><a href="profile.html">View Profile</a></li>
+                    <li><a href="#" id="logout">🚪 Logout</a></li>
+                </ul>
+            </li>
+        </ul>
+    </nav>
+
+    <!-- Track Order Container -->
+    <div class="track-order-container">
+        <h2>📦 Track Order Status</h2>
+        
+        <!-- Order ID Display -->
+        <div class="order-id">
+            <h3>Order ID: <span id="order-id">Not Available</span></h3>
+        </div>
+
+         <!-- Order Summary -->
+         <div class="order-summary">
+            <h3>📝 Order Summary</h3>
+            <div id="order-items"></div> <!-- Dynamic Order List -->
+            <h3>Total Amount: ₹<span id="total-amount">0</span></h3>
+        </div>
+
+        <!-- Order Status -->
+        <div class="order-status">
+            <h3>📍 Current Status</h3>
+            <p id="status-text">Your order is being processed.</p> <!-- Default message -->
+        </div>
+
+
+
+        <!-- Back to Menu Button -->
+        <a href="menu.html" class="back-btn">Back to Menu</a>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            // Load order details from localStorage
+            let orderDetails = JSON.parse(localStorage.getItem("orderDetails")) || []; // Retrieve data by correct key
+
+            // If order details exist, display them
+            if (orderDetails.length > 0) {
+                // Calculate the total amount
+                let totalAmount = orderDetails.reduce((sum, item) => sum + item.price * item.quantity, 0);
+
+                // Display order items
+                let orderItemsDiv = document.getElementById("order-items");
+                orderItemsDiv.innerHTML = orderDetails.map(item => `
+                    <p>${item.name} (x${item.quantity}) - ₹${item.price * item.quantity}</p>
+                `).join("");
+
+                // Show the total amount
+                document.getElementById("total-amount").textContent = totalAmount;
+            } else {
+                document.getElementById("order-items").innerHTML = "<p>No order details available.</p>";
+                document.getElementById("total-amount").textContent = "0";
+            }
+
+            // Retrieve and display payment status
+            let paymentStatus = localStorage.getItem("paymentStatus") || "Order not yet confirmed.";
+            document.getElementById("status-text").textContent = `Payment Status: ${paymentStatus}`;
+
+            // Retrieve and display order ID
+            let orderId = localStorage.getItem("orderId") || "Not Available"; // Fetch Order ID from localStorage
+            document.getElementById("order-id").textContent = orderId;
+        });
+    </script>
+
+    <script src="path/to/track-order.js"></script>
+</body>
+</html>

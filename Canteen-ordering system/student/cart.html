@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cart | College Canteen</title>
+    <link rel="stylesheet" href="../assests/css/cart.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+</head>
+
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="logo">Canteen 🍽️</div>
+        <div class="hamburger" onclick="toggleMenu()">☰</div>
+        <ul class="nav-links">
+            <li><a href="menu.html">Menu</a></li>
+            <li><a href="cart.html" class="active">🛒 Cart</a></li>
+            <li><a href="track-order.html">📦 Order Status</a></li>
+            <li class="profile-dropdown">
+                <a href="profile.html">👤 Profile ▾</a>
+                <ul class="dropdown">
+                    <li><a href="profile.html">View Profile</a></li>
+                    <li><a href="#" id="logout">🚪 Logout</a></li>
+                </ul>
+            </li>
+        </ul>
+    </nav>
+
+
+    <!-- Cart Container -->
+    <div class="cart-container">
+        <h2>🛒 Your Cart</h2>
+        <div id="cart-items"></div>
+
+        <!-- Total Bill -->
+        <h3 id="total-amount">Total Amount: ₹0</h3>
+
+        <!-- Order Type -->
+        <div class="order-type">
+            <label><input type="radio" name="orderType" value="instant" checked> Instant Order</label>
+            <label><input type="radio" name="orderType" value="schedule"> Schedule Order</label>
+            <input type="datetime-local" id="scheduleTime" disabled>
+        </div>
+
+        <!-- Proceed to Payment -->
+        <button id="checkout-btn">Proceed to Payment</button>
+    </div>
+
+    <script src="../assests/js/cart.js"></script>
+</body>
+
+</html>

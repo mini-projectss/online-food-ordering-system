@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Menu | Canteen</title>
+    <link rel="stylesheet" href="../assests/css/menu.css">
+    <script defer src="../assests/js/menu.js"></script>
+</head>
+
+<body>
+
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="logo">Canteen 🍽️</div>
+        <div class="hamburger" onclick="toggleMenu()">☰</div>
+        <ul class="nav-links">
+            <li><a href="menu.html" class="active">Menu</a></li>
+            <li><a href="cart.html">🛒 Cart</a></li>
+            <li><a href="track-order.html">📦 Order Status</a></li>
+            <li class="profile-dropdown">
+                <div class="profile-dropdown">
+                    <a href="#">👤 Profile ▾</a>
+                    <div class="profile-dropdown-content">
+                        <a href="#">View Profile</a>
+                        <a href="#">Logout</a>
+                    </div>
+                </div>
+
+                </ul>
+            </li>
+        </ul>
+    </nav>
+
+    <!-- Hero Section with Background Image -->
+    <div class="hero-section">
+        <h2 class="menu-header">Explore Our Delicious Menu 🍽️</h2>
+        <!-- Search Bar -->
+        <div class="search-container">
+            <input type="text" id="search" placeholder="Search food...">
+        </div>
+    </div>
+
+    <!-- Filter Buttons -->
+    <div class="filter-container">
+        <button class="filter-btn" data-category="All">All</button>
+        <button class="filter-btn" data-category="Veg">Veg</button>
+        <button class="filter-btn" data-category="Non-Veg">Non-Veg</button>
+        <button class="filter-btn" data-category="Beverages">Beverages</button>
+    </div>
+
+    <!-- Menu Section -->
+    <section class="menu-container">
+        <!-- Items will be added dynamically via JS -->
+    </section>
+
+</body>
+
+</html>

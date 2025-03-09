@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment | College Canteen</title>
+    <link rel="stylesheet" href="../assests/css/payment.css">
+</head>
+
+<script src="../assests/js/payment.js"></script>
+
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="logo">Canteen 🍽️</div>
+        <div class="hamburger" onclick="toggleMenu()">☰</div>
+        <ul class="nav-links">
+            <li><a href="menu.html" class="active">Menu</a></li>
+            <li><a href="cart.html">🛒 Cart</a></li>
+            <li><a href="track-order.html">📦 Order Status</a></li>
+            <li class="profile-dropdown">
+                <div class="profile-dropdown">
+                    <a href="#">👤 Profile ▾</a>
+                    <div class="profile-dropdown-content">
+                        <a href="#">View Profile</a>
+                        <a href="#">Logout</a>
+                    </div>
+                </div>
+    
+        </ul>
+        </li>
+        </ul>
+    </nav>
+
+    <!-- Payment Container -->
+    <div class="payment-container">
+        <h2>💳 Payment</h2>
+
+        <!-- Order Summary -->
+        <div class="order-summary">
+            <h3>📝 Order Summary</h3>
+            <p>Order ID: <span id="order-id"></span></p> <!-- Display Order ID -->
+            <div id="order-items"></div>
+            <h3>Total Amount: ₹<span id="total-amount">0</span></h3>
+        </div>
+
+        <!-- Payment Methods -->
+        <div class="payment-methods">
+            <h3>💰 Choose Payment Method</h3>
+            <label><input type="radio" name="payment" value="upi" checked> UPI Payment (Google Pay, PhonePe, Paytm)</label>
+            <label><input type="radio" name="payment" value="cash"> Cash on Delivery</label>
+        </div>
+
+        <!-- Status Message -->
+        <p id="status-text"></p>
+
+        <!-- Payment Button -->
+        <button id="pay-btn" class="payment-btn" disabled>Proceed to Payment</button>
+
+        <!-- Checkout Button for Cash on Delivery -->
+        <button id="checkout-btn" class="payment-btn" disabled>Checkout (Cash on Delivery)</button>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            // Generate a unique order ID
+            const orderId = 'ORD-' + new Date().getTime() + '-' + Math.floor(Math.random() * 1000);
+
+            // Store order ID in localStorage
+            localStorage.setItem("orderId", orderId);
+
+            // Load order details from localStorage
+            let cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+            if (cart.length === 0) {
+                document.getElementById("status-text").textContent = "⚠️ Your cart is empty!";
+                return; // Exit if there are no items in the cart
+            }
+
+            // Calculate the total amount
+            let totalAmount = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
+
+            // Display cart items
+            let orderItemsDiv = document.getElementById("order-items");
+            orderItemsDiv.innerHTML = cart.map(item => `
+                <p>${item.name} (x${item.quantity}) - ₹${item.price * item.quantity}</p>
+            `).join("");
+
+            // Display the order ID in the summary
+            document.getElementById("order-id").textContent = orderId;
+
+            // Show total amount
+            document.getElementById("total-amount").textContent = totalAmount;
+
+            // Toggle the active button based on payment selection
+            const payButton = document.getElementById("pay-btn");
+            const checkoutButton = document.getElementById("checkout-btn");
+            const paymentRadios = document.querySelectorAll('input[name="payment"]');
+
+            // Function to handle button enabling/disabling based on payment method
+            function togglePaymentButtons() {
+                const selectedPayment = document.querySelector('input[name="payment"]:checked').value;
+
+                if (selectedPayment === "upi") {
+                    payButton.disabled = false; // Enable "Proceed to Payment"
+                    checkoutButton.disabled = true; // Disable "Checkout"
+                } else if (selectedPayment === "cash") {
+                    payButton.disabled = true; // Disable "Proceed to Payment"
+                    checkoutButton.disabled = false; // Enable "Checkout"
+                }
+            }
+
+            // Set initial state
+            togglePaymentButtons();
+
+            // Listen for changes in payment method selection
+            paymentRadios.forEach(radio => {
+                radio.addEventListener("change", togglePaymentButtons);
+            });
+
+            // Handle UPI Payment (Proceed to Payment button)
+            payButton.addEventListener("click", function () {
+                let selectedPayment = document.querySelector('input[name="payment"]:checked').value;
+
+                if (selectedPayment === "upi") {
+                    document.getElementById("status-text").textContent = "Redirecting to UPI payment... Please wait.";
+                    setTimeout(() => {
+                        // Store order details and payment status in localStorage
+                        localStorage.setItem("paymentStatus", "Completed");
+                        localStorage.setItem("orderDetails", JSON.stringify(cart)); // Store the cart (order details)
+                        localStorage.removeItem("cart"); // Clear cart after successful payment
+                        window.location.href = "payment-success.html"; // Redirect to success page
+                    }, 2000);
+                }
+            });
+
+            // Handle Cash on Delivery (Checkout button)
+            checkoutButton.addEventListener("click", function () {
+                document.getElementById("status-text").textContent = "✅ Cash on Delivery Selected. Your order is confirmed!";
+                // Store order details and payment status in localStorage
+                localStorage.setItem("paymentStatus", "Cash on Delivery");
+                localStorage.setItem("orderDetails", JSON.stringify(cart)); // Store the cart (order details)
+                localStorage.removeItem("cart"); // Clear cart after payment
+                window.location.href = "track-order.html"; // Redirect to success page
+            });
+        });
+    </script>
+</body>
+</html>
