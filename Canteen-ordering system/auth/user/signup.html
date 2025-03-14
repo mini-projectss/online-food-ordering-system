@@ -36,6 +36,46 @@
         </div>
     </div>
 
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+    
+    <script>
+      const firebaseConfig = {
+        apiKey: "AIzaSyAiJplG7u_x_ijhxC9AD9F2JPYoU0k2Lnk",
+        authDomain: "online-cateen-ordeing.firebaseapp.com",
+        projectId: "online-cateen-ordeing",
+        storageBucket: "online-cateen-ordeing.firebasestorage.app",
+        messagingSenderId: "1088334175531",
+        appId: "1:1088334175531:web:586611bcf1bbba05f5f96e",
+        measurementId: "G-BL8BCFH88B"
+      };
+      firebase.initializeApp(firebaseConfig);
+      const auth = firebase.auth();
+      const db = firebase.firestore();
+    </script>
+    
+    <script>
+        document.getElementById('student-signup-form').addEventListener('submit', (e) => {
+          e.preventDefault();
+          const email = document.getElementById('student-email').value;
+          const password = document.getElementById('student-password').value;
+      
+          auth.createUserWithEmailAndPassword(email, password)
+            .then((userCredential) => {
+              return db.collection('users').doc(userCredential.user.uid).set({
+                email: email,
+                role: 'student',
+                createdAt: firebase.firestore.FieldValue.serverTimestamp()
+              });
+            })
+            .then(() => {
+              window.location.href = '../../student/menu.html';
+            })
+            .catch((error) => alert(error.message));
+        });
+      </script>
+
     <script src="../../assests/js/auth.js"></script>
 </body>
 

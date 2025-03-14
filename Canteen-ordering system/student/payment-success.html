@@ -32,6 +32,33 @@
     </div>
 
     <script>
+        // Firebase Auth State Listener
+        auth.onAuthStateChanged((user) => {
+          if (!user) {
+            // If user is not logged in, redirect to login page
+            window.location.href = '../auth/user/login.html'; // or admin/login.html
+          } else {
+            // If user is logged in, check their role
+            db.collection('users').doc(user.uid).get().then((doc) => {
+              const userData = doc.data();
+              const role = userData.role;
+      
+              // Redirect based on role
+              if (role === 'student' && !window.location.pathname.includes('/student/')) {
+                window.location.href = '../student/menu.html';
+              } else if (role === 'admin' && !window.location.pathname.includes('/admin/')) {
+                window.location.href = '../admin/dashboard.html';
+              }
+            }).catch((error) => {
+              console.error('Error fetching user data:', error);
+              auth.signOut(); // Sign out the user if there's an error
+              window.location.href = '../auth/user/login.html'; // Redirect to login
+            });
+          }
+        });
+      </script>
+
+    <script>
         document.addEventListener("DOMContentLoaded", function () {
             // Get the payment status
             let paymentStatus = localStorage.getItem("paymentStatus");

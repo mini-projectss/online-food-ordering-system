@@ -36,6 +36,54 @@
         </div>
     </div>
 
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+    
+    <script>
+      const firebaseConfig = {
+        apiKey: "AIzaSyAiJplG7u_x_ijhxC9AD9F2JPYoU0k2Lnk",
+        authDomain: "online-cateen-ordeing.firebaseapp.com",
+        projectId: "online-cateen-ordeing",
+        storageBucket: "online-cateen-ordeing.firebasestorage.app",
+        messagingSenderId: "1088334175531",
+        appId: "1:1088334175531:web:586611bcf1bbba05f5f96e",
+        measurementId: "G-BL8BCFH88B"
+      };
+      firebase.initializeApp(firebaseConfig);
+      const auth = firebase.auth();
+      const db = firebase.firestore();
+    </script>
+
+<script>
+    const ADMIN_SECRET_KEY = "adminsecretkey@2025"; // Change this
+  
+    document.getElementById('admin-signup-form').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const email = document.getElementById('admin-email').value;
+      const password = document.getElementById('admin-password').value;
+      const secretKey = prompt('Enter admin secret key:');
+  
+      if (secretKey !== ADMIN_SECRET_KEY) {
+        alert('Invalid admin secret key');
+        return;
+      }
+  
+      auth.createUserWithEmailAndPassword(email, password)
+        .then((userCredential) => {
+          return db.collection('users').doc(userCredential.user.uid).set({
+            email: email,
+            role: 'admin',
+            createdAt: firebase.firestore.FieldValue.serverTimestamp()
+          });
+        })
+        .then(() => {
+          window.location.href = '../../admin/dashboard.html';
+        })
+        .catch((error) => alert(error.message));
+    });
+  </script>
+
     <script src="../../assests/js/auth.js"></script>
 </body>
 
