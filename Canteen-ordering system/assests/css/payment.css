@@ -2,7 +2,7 @@
 /* Apply Background Image to Whole Page */
 body {
     font-family: Arial, sans-serif;
-    background: url('../images/bgimageauth.jpeg') no-repeat center center fixed;
+    background: url('../images/thanks1.jpg') no-repeat center center fixed;
     /* Set Background Image */
     background-size: cover;
     /* Ensure it covers the whole page */

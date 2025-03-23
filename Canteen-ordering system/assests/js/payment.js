@@ -146,6 +146,7 @@ async function saveOrderToFirebase(paymentResponse) {
   
     // Prepare order data. You can add more fields as needed.
     const orderData = {
+        
       orderId: localStorage.getItem("orderId"),
       paymentResponse, // Contains details returned by Razorpay
       cart: JSON.parse(localStorage.getItem("cart")), // Storing cart details
@@ -164,14 +165,64 @@ async function saveOrderToFirebase(paymentResponse) {
 
 
     // Handle Cash on Delivery (Checkout button)
-    checkoutButton.addEventListener("click", function () {
+    checkoutButton.addEventListener("click", async function () {
         document.getElementById("status-text").textContent = "✅ Cash on Delivery Selected. Your order is confirmed!";
-        // Store order details and payment status in localStorage
+        
+        // Create a dummy payment response for Cash on Delivery orders
+        const codResponse = {
+          method: "Cash on Delivery",
+          status: "Success",
+          transactionId: "COD-" + new Date().getTime()
+        };
+    
+        // Save the order details to Firestore for COD orders
+        await saveOrderToFirebase(codResponse);
+    
+        // Optionally store order details in localStorage
         localStorage.setItem("paymentStatus", "Cash on Delivery");
-        localStorage.setItem("orderDetails", JSON.stringify(cart)); // Store the cart (order details)
-        localStorage.removeItem("cart"); // Clear cart after payment
-        window.location.href = "track-order.html"; // Redirect to success page
+        localStorage.setItem("orderDetails", JSON.stringify(cart)); // For any order summary display
+        
+        // Clear the cart after order is placed
+        localStorage.removeItem("cart");
+    
+        // Redirect to the order tracking page
+        window.location.href = "track-order.html";
     });
+
+
+    async function saveOrderToFirebase(paymentResponse) {
+        const user = auth.currentUser;
+        if (!user) {
+          console.error("No user is logged in, cannot save order.");
+          return;
+        }
+      
+        // Prepare order data. You can add more fields as needed.
+        const orderData = {
+          orderId: localStorage.getItem("orderId"),
+          paymentResponse, // Contains details returned by Razorpay or dummy COD response
+          cart: JSON.parse(localStorage.getItem("cart")), // Storing cart details
+          createdAt: firebase.firestore.FieldValue.serverTimestamp() // Timestamp from Firestore
+        };
+      
+        try {
+          // Save the order under a subcollection 'orders' for the user
+          await db.collection("users").doc(user.uid).collection("orders").add(orderData);
+          console.log("Order saved successfully!");
+        } catch (error) {
+          console.error("Error saving order:", error);
+        }
+    }
+
+
+
+
+
+
+
+
+
+
 });
 
 function toggleMenu() {

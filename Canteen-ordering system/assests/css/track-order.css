@@ -1,7 +1,7 @@
 /* Global Styles */
 body {
     font-family: Arial, sans-serif;
-    background-image: url('/assests/images/bg_4.webp');
+    background: url('../images/TRACKX.jpeg') no-repeat center center fixed;
     /* Set Background Image */
     background-size: cover;
     background-position: center;
