@@ -95,7 +95,7 @@ document.addEventListener("DOMContentLoaded", function () {
       
             // Configure Razorpay
             const options = {
-              key: "rzp_test_YOUR_KEY", // Your Razorpay TEST key
+              key: "rzp_test_Ywd9gWBWFV1zVA", // Your Razorpay TEST key
               amount: order.amount,
               currency: "INR",
               order_id: order.id,

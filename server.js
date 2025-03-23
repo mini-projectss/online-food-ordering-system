@@ -7,7 +7,7 @@ const app = express();
 
 // Middleware
 app.use(cors({
-  origin: 'https://online-cateen-ordering.web.app', // Allow only your frontend origin
+  origin: 'https://online-cateen-ordeing.web.app', // Allow only your frontend origin
   methods: ['GET', 'POST', 'OPTIONS'], // Allow necessary HTTP methods
   allowedHeaders: ['Content-Type', 'Authorization'] // Allow necessary headers
 }));
