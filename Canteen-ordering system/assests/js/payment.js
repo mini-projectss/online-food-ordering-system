@@ -136,6 +136,33 @@ document.addEventListener("DOMContentLoaded", function () {
         }
       });
 
+        // Function to save order details to Firestore
+async function saveOrderToFirebase(paymentResponse) {
+    const user = auth.currentUser;
+    if (!user) {
+      console.error("No user is logged in, cannot save order.");
+      return;
+    }
+  
+    // Prepare order data. You can add more fields as needed.
+    const orderData = {
+      orderId: localStorage.getItem("orderId"),
+      paymentResponse, // Contains details returned by Razorpay
+      cart: JSON.parse(localStorage.getItem("cart")), // Storing cart details
+      createdAt: firebase.firestore.FieldValue.serverTimestamp() // Timestamp from Firestore
+    };
+  
+    try {
+      // Save the order under a subcollection 'orders' for the user
+      await db.collection("users").doc(user.uid).collection("orders").add(orderData);
+      console.log("Order saved successfully!");
+    } catch (error) {
+      console.error("Error saving order:", error);
+    }
+  }
+  
+
+
     // Handle Cash on Delivery (Checkout button)
     checkoutButton.addEventListener("click", function () {
         document.getElementById("status-text").textContent = "✅ Cash on Delivery Selected. Your order is confirmed!";
