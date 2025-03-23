@@ -85,7 +85,7 @@ document.addEventListener("DOMContentLoaded", function () {
             const totalAmount = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
       
             // Call Render server
-            const response = await fetch('https://your-render-service.onrender.com/create-order', {
+            const response = await fetch('https://online-food-ordering-system-ffv5.onrender.com/create-order', {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
               body: JSON.stringify({ amount: totalAmount })
@@ -101,7 +101,7 @@ document.addEventListener("DOMContentLoaded", function () {
               order_id: order.id,
               name: "College Canteen",
               description: "Food Order Payment",
-              image: "/assests/images/logo.png",
+              image: "Canteen-ordering system/assests/images/VISUAL-ART-LOGO-1-1024x1024.png",
               handler: async function(response) {
                 await saveOrderToFirebase(response);
                 localStorage.setItem("paymentStatus", "Completed");
