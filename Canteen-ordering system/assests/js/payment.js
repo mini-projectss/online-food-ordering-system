@@ -13,6 +13,20 @@ firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
 const auth = firebase.auth();
 
+// Global variable to hold user data
+let userData = {};
+
+// Fetch user data when the auth state changes
+auth.onAuthStateChanged(user => {
+  if (user) {
+    db.collection("users").doc(user.uid).get()
+      .then(doc => {
+        userData = doc.data() || {};
+      })
+      .catch(error => console.error("Error fetching user data: ", error));
+  }
+});
+
 document.addEventListener("DOMContentLoaded", function () {
     // Generate a unique order ID
     const orderId = 'ORD-' + new Date().getTime() + '-' + Math.floor(Math.random() * 1000);
@@ -51,7 +65,6 @@ document.addEventListener("DOMContentLoaded", function () {
     // Function to handle button enabling/disabling based on payment method
     function togglePaymentButtons() {
         const selectedPayment = document.querySelector('input[name="payment"]:checked').value;
-
         if (selectedPayment === "razorpay") {
             payButton.disabled = false; // Enable "Proceed to Payment"
             checkoutButton.disabled = true; // Disable "Checkout"
@@ -69,7 +82,6 @@ document.addEventListener("DOMContentLoaded", function () {
         radio.addEventListener("change", togglePaymentButtons);
     });
 
-
     payButton.addEventListener("click", async function () {
         try {
           const selectedPayment = document.querySelector('input[name="payment"]:checked').value;
@@ -81,10 +93,10 @@ document.addEventListener("DOMContentLoaded", function () {
               return;
             }
       
-            // Get total amount
+            // Get total amount again (if needed)
             const totalAmount = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
       
-            // Call Render server
+            // Call your Render server to create an order
             const response = await fetch('https://online-food-ordering-system-ffv5.onrender.com/create-order', {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
@@ -93,7 +105,7 @@ document.addEventListener("DOMContentLoaded", function () {
       
             const order = await response.json();
       
-            // Configure Razorpay
+            // Configure Razorpay options including prefill using userData
             const options = {
               key: "rzp_test_Ywd9gWBWFV1zVA", // Your Razorpay TEST key
               amount: order.amount,
@@ -124,8 +136,6 @@ document.addEventListener("DOMContentLoaded", function () {
         }
       });
 
-
-
     // Handle Cash on Delivery (Checkout button)
     checkoutButton.addEventListener("click", function () {
         document.getElementById("status-text").textContent = "✅ Cash on Delivery Selected. Your order is confirmed!";
@@ -136,6 +146,7 @@ document.addEventListener("DOMContentLoaded", function () {
         window.location.href = "track-order.html"; // Redirect to success page
     });
 });
+
 function toggleMenu() {
     document.querySelector(".nav-links").classList.toggle("active");
 }
