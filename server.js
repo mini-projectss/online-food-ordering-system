@@ -1,12 +1,22 @@
 const express = require("express");
 const Razorpay = require("razorpay");
-const cors = require("cors");
 require("dotenv").config();
 
 const app = express();
 
-// Middleware: Allow all origins
-app.use(cors());
+// Manually set CORS headers for all requests
+app.use((req, res, next) => {
+  res.setHeader("Access-Control-Allow-Origin", "*"); // Allow requests from any origin
+  res.setHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS"); // Allow specific HTTP methods
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization"); // Allow specific headers
+
+  // Handle preflight OPTIONS request
+  if (req.method === "OPTIONS") {
+    return res.sendStatus(200);
+  }
+  next();
+});
+
 app.use(express.json());
 
 // Initialize Razorpay
