@@ -5,12 +5,8 @@ require("dotenv").config();
 
 const app = express();
 
-// Middleware
-app.use(cors({
-  origin: 'https://online-cateen-ordeing.web.app', // Allow only your frontend origin
-  methods: ['GET', 'POST', 'OPTIONS'], // Allow necessary HTTP methods
-  allowedHeaders: ['Content-Type', 'Authorization'] // Allow necessary headers
-}));
+// Middleware: Allow all origins
+app.use(cors());
 app.use(express.json());
 
 // Initialize Razorpay
@@ -41,9 +37,6 @@ app.post("/create-order", async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 });
-
-// Handle preflight requests
-app.options("/create-order", cors());
 
 // Start Server
 const PORT = process.env.PORT || 3000;
