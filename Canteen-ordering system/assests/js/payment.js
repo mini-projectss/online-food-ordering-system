@@ -1,3 +1,18 @@
+// Initialize Firebase
+const firebaseConfig = {
+    apiKey: "AIzaSyAiJplG7u_x_ijhxC9AD9F2JPYoU0k2Lnk",
+    authDomain: "online-cateen-ordeing.firebaseapp.com",
+    projectId: "online-cateen-ordeing",
+    storageBucket: "online-cateen-ordeing.firebasestorage.app",
+    messagingSenderId: "1088334175531",
+    appId: "1:1088334175531:web:586611bcf1bbba05f5f96e",
+    measurementId: "G-BL8BCFH88B"
+};
+
+firebase.initializeApp(firebaseConfig);
+const db = firebase.firestore();
+const auth = firebase.auth();
+
 document.addEventListener("DOMContentLoaded", function () {
     // Generate a unique order ID
     const orderId = 'ORD-' + new Date().getTime() + '-' + Math.floor(Math.random() * 1000);
@@ -37,7 +52,7 @@ document.addEventListener("DOMContentLoaded", function () {
     function togglePaymentButtons() {
         const selectedPayment = document.querySelector('input[name="payment"]:checked').value;
 
-        if (selectedPayment === "upi") {
+        if (selectedPayment === "razorpay") {
             payButton.disabled = false; // Enable "Proceed to Payment"
             checkoutButton.disabled = true; // Disable "Checkout"
         } else if (selectedPayment === "cash") {
@@ -54,21 +69,62 @@ document.addEventListener("DOMContentLoaded", function () {
         radio.addEventListener("change", togglePaymentButtons);
     });
 
-    // Handle UPI Payment (Proceed to Payment button)
-    payButton.addEventListener("click", function () {
-        let selectedPayment = document.querySelector('input[name="payment"]:checked').value;
 
-        if (selectedPayment === "upi") {
-            document.getElementById("status-text").textContent = "Redirecting to UPI payment... Please wait.";
-            setTimeout(() => {
-                // Store order details and payment status in localStorage
+    payButton.addEventListener("click", async function () {
+        try {
+          const selectedPayment = document.querySelector('input[name="payment"]:checked').value;
+          
+          if (selectedPayment === "razorpay") {
+            const user = auth.currentUser;
+            if (!user) {
+              alert("User not logged in!");
+              return;
+            }
+      
+            // Get total amount
+            const totalAmount = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
+      
+            // Call Render server
+            const response = await fetch('https://your-render-service.onrender.com/create-order', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ amount: totalAmount })
+            });
+      
+            const order = await response.json();
+      
+            // Configure Razorpay
+            const options = {
+              key: "rzp_test_YOUR_KEY", // Your Razorpay TEST key
+              amount: order.amount,
+              currency: "INR",
+              order_id: order.id,
+              name: "College Canteen",
+              description: "Food Order Payment",
+              image: "/assests/images/logo.png",
+              handler: async function(response) {
+                await saveOrderToFirebase(response);
                 localStorage.setItem("paymentStatus", "Completed");
-                localStorage.setItem("orderDetails", JSON.stringify(cart)); // Store the cart (order details)
-                localStorage.removeItem("cart"); // Clear cart after successful payment
-                window.location.href = "payment-success.html"; // Redirect to success page
-            }, 2000);
+                window.location.href = "payment-success.html";
+              },
+              prefill: {
+                name: userData?.name || "Customer",
+                email: userData?.email || "test@example.com",
+                contact: userData?.phone || "9876543210"
+              },
+              theme: { color: "#3399cc" }
+            };
+      
+            const rzp = new Razorpay(options);
+            rzp.open();
+          }
+        } catch (error) {
+          console.error("Payment error:", error);
+          document.getElementById("status-text").textContent = "Payment failed! Error: " + error.message;
         }
-    });
+      });
+
+
 
     // Handle Cash on Delivery (Checkout button)
     checkoutButton.addEventListener("click", function () {

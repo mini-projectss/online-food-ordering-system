@@ -114,5 +114,15 @@
     </script>
 
     <script src="path/to/track-order.js"></script>
+     
+    <script>
+      // Request notification permission
+      if ("Notification" in window) {
+          Notification.requestPermission().then(permission => {
+              console.log("Notification permission:", permission);
+          });
+      }
+  </script>
+
 </body>
 </html>

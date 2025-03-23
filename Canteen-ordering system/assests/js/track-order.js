@@ -24,4 +24,35 @@ document.addEventListener("DOMContentLoaded", function () {
         document.getElementById("order-items").innerHTML = "<p>No order details available.</p>";
         document.getElementById("total-amount").textContent = "0";
     }
+
+    // Add Firebase real-time order status listener
+    const user = auth.currentUser;
+    if (orderId && user) {
+        db.collection("orders")
+            .where("orderId", "==", orderId)
+            .where("userId", "==", user.uid)
+            .onSnapshot((snapshot) => {
+                snapshot.docChanges().forEach((change) => {
+                    if (change.type === "modified") {
+                        const data = change.doc.data();
+                        updateOrderStatus(data.status);
+                    }
+                });
+            });
+    }
+
+    function updateOrderStatus(status) {
+        const statusText = document.getElementById("status-text");
+        statusText.textContent = `Order Status: ${status}`;
+
+        if (status === "completed") {
+            showNotification("Order ready for pickup!");
+        }
+    }
+
+    function showNotification(message) {
+        if ("Notification" in window && Notification.permission === "granted") {
+            new Notification("Order Update", { body: message });
+        }
+    }
 });

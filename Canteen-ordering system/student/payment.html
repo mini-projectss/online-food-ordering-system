@@ -5,14 +5,25 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Payment | College Canteen</title>
     <link rel="stylesheet" href="../assests/css/payment.css">
+
+<!-- Firebase -->
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+
+<!-- Razorpay -->
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
+<!-- Your JS -->
+<script src="../assests/js/payment.js"></script>
 </head>
 
-<script src="../assests/js/payment.js"></script>
 
 <body>
     <!-- Navbar -->
     <nav class="navbar">
         <div class="logo">Canteen 🍽️</div>
+
         <div class="hamburger" onclick="toggleMenu()">☰</div>
         <ul class="nav-links">
             <li><a href="menu.html" class="active">Menu</a></li>
@@ -44,10 +55,9 @@
             <h3>Total Amount: ₹<span id="total-amount">0</span></h3>
         </div>
 
-        <!-- Payment Methods -->
         <div class="payment-methods">
             <h3>💰 Choose Payment Method</h3>
-            <label><input type="radio" name="payment" value="upi" checked> UPI Payment (Google Pay, PhonePe, Paytm)</label>
+            <label><input type="radio" name="payment" value="razorpay" checked> Razorpay</label>
             <label><input type="radio" name="payment" value="cash"> Cash on Delivery</label>
         </div>
 
@@ -130,7 +140,7 @@
             function togglePaymentButtons() {
                 const selectedPayment = document.querySelector('input[name="payment"]:checked').value;
 
-                if (selectedPayment === "upi") {
+                if (selectedPayment === "razorpay") {
                     payButton.disabled = false; // Enable "Proceed to Payment"
                     checkoutButton.disabled = true; // Disable "Checkout"
                 } else if (selectedPayment === "cash") {
@@ -148,20 +158,7 @@
             });
 
             // Handle UPI Payment (Proceed to Payment button)
-            payButton.addEventListener("click", function () {
-                let selectedPayment = document.querySelector('input[name="payment"]:checked').value;
-
-                if (selectedPayment === "upi") {
-                    document.getElementById("status-text").textContent = "Redirecting to UPI payment... Please wait.";
-                    setTimeout(() => {
-                        // Store order details and payment status in localStorage
-                        localStorage.setItem("paymentStatus", "Completed");
-                        localStorage.setItem("orderDetails", JSON.stringify(cart)); // Store the cart (order details)
-                        localStorage.removeItem("cart"); // Clear cart after successful payment
-                        window.location.href = "payment-success.html"; // Redirect to success page
-                    }, 2000);
-                }
-            });
+           
 
             // Handle Cash on Delivery (Checkout button)
             checkoutButton.addEventListener("click", function () {
