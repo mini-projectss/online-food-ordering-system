@@ -5,9 +5,9 @@
   "scripts": {
     "start": "node server.js"
   },
-
   "dependencies": {
     "cors": "^2.8.5",
+    "curl": "^0.1.4",
     "dotenv": "^16.4.7",
     "express": "^4.21.2",
     "razorpay": "^2.9.6"
