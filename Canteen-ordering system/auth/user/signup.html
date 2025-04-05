@@ -22,6 +22,12 @@
                     <label for="student-email">Email</label>
                     <input type="email" id="student-email" placeholder="Enter your email" required>
                 </div>
+                
+                <div class="input-group">
+                  <label for="student-phone">Phone No</label>
+                  <input type="tel" id="student-phone" placeholder="Enter your phone number" required>
+                </div>
+
                 <div class="input-group">
                     <label for="student-password">Password</label>
                     <input type="password" id="student-password" placeholder="Enter your password" required>
@@ -56,25 +62,35 @@
     </script>
     
     <script>
-        document.getElementById('student-signup-form').addEventListener('submit', (e) => {
-          e.preventDefault();
-          const email = document.getElementById('student-email').value;
-          const password = document.getElementById('student-password').value;
-      
-          auth.createUserWithEmailAndPassword(email, password)
-            .then((userCredential) => {
-              return db.collection('users').doc(userCredential.user.uid).set({
-                email: email,
-                role: 'student',
-                createdAt: firebase.firestore.FieldValue.serverTimestamp()
-              });
-            })
-            .then(() => {
-              window.location.href = '../../student/menu.html';
-            })
-            .catch((error) => alert(error.message));
-        });
-      </script>
+    document.getElementById('student-signup-form').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const name = document.getElementById('student-name').value;
+      const email = document.getElementById('student-email').value;
+      const phone = document.getElementById('student-phone').value;
+      const password = document.getElementById('student-password').value;
+
+      // Validate phone number
+      if (!/^\d{10}$/.test(phone)) {
+        alert('Please enter a valid 10-digit phone number');
+        return;
+      }
+
+      auth.createUserWithEmailAndPassword(email, password)
+        .then((userCredential) => {
+          return db.collection('users').doc(userCredential.user.uid).set({
+            name: name,
+            email: email,
+            phone: phone,
+            role: 'student',
+            createdAt: firebase.firestore.FieldValue.serverTimestamp()
+          });
+        })
+        .then(() => {
+          window.location.href = '../user/login.html';
+        })
+        .catch((error) => alert(error.message));
+    });
+</script>
 
     <script src="../../assests/js/auth.js"></script>
 </body>

@@ -22,6 +22,14 @@
                     <label for="admin-email">Email</label>
                     <input type="email" id="admin-email" placeholder="Enter your email" required>
                 </div>
+                
+                <div class="input-group">
+                  <label for="admin-phone">Phone No</label>
+                  <input type="tel" id="admin-phone" placeholder="Enter your phone number" required>
+                </div>+
+
+
+
                 <div class="input-group">
                     <label for="admin-password">Password</label>
                     <input type="password" id="admin-password" placeholder="Enter your password" required>
@@ -56,33 +64,43 @@
     </script>
 
 <script>
-    const ADMIN_SECRET_KEY = "adminsecretkey@2025"; // Change this
-  
-    document.getElementById('admin-signup-form').addEventListener('submit', (e) => {
-      e.preventDefault();
-      const email = document.getElementById('admin-email').value;
-      const password = document.getElementById('admin-password').value;
-      const secretKey = prompt('Enter admin secret key:');
-  
-      if (secretKey !== ADMIN_SECRET_KEY) {
-        alert('Invalid admin secret key');
-        return;
-      }
-  
-      auth.createUserWithEmailAndPassword(email, password)
-        .then((userCredential) => {
-          return db.collection('users').doc(userCredential.user.uid).set({
-            email: email,
-            role: 'admin',
-            createdAt: firebase.firestore.FieldValue.serverTimestamp()
-          });
-        })
-        .then(() => {
-          window.location.href = '../../admin/dashboard.html';
-        })
-        .catch((error) => alert(error.message));
-    });
-  </script>
+  const ADMIN_SECRET_KEY = "adminsecretkey@2025";
+
+  document.getElementById('admin-signup-form').addEventListener('submit', (e) => {
+    e.preventDefault();
+    const name = document.getElementById('admin-name').value;
+    const email = document.getElementById('admin-email').value;
+    const phone = document.getElementById('admin-phone').value;
+    const password = document.getElementById('admin-password').value;
+    const secretKey = prompt('Enter admin secret key:');
+
+    if (secretKey !== ADMIN_SECRET_KEY) {
+      alert('Invalid admin secret key');
+      return;
+    }
+
+    // Validate phone number
+    if (!/^\d{10}$/.test(phone)) {
+      alert('Please enter a valid 10-digit phone number');
+      return;
+    }
+
+    auth.createUserWithEmailAndPassword(email, password)
+      .then((userCredential) => {
+        return db.collection('users').doc(userCredential.user.uid).set({
+          name: name,
+          email: email,
+          phone: phone,
+          role: 'admin',
+          createdAt: firebase.firestore.FieldValue.serverTimestamp()
+        });
+      })
+      .then(() => {
+        window.location.href = '../admin/login.html';
+      })
+      .catch((error) => alert(error.message));
+  });
+</script>
 
     <script src="../../assests/js/auth.js"></script>
 </body>
