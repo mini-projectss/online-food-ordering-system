@@ -9,6 +9,7 @@ body {
     padding: 0;
 }
 
+
 /* Navbar Styling */
 .navbar {
     display: flex;
@@ -17,7 +18,7 @@ body {
     padding: 15px 30px;
     margin: 15px 20px;
     /* Space from top, left, and right */
-    background: rgba(0, 0, 0, 0.7);
+    background: rgba(47, 47, 47, 0.7);
     /* Transparent effect */
     /* backdrop-filter: blur(10px); */
     /* Blur effect */
@@ -37,16 +38,21 @@ body {
 .nav-links {
     list-style: none;
     display: flex;
-    align-items: center;
     gap: 20px;
 }
 
+.nav-links li {
+    position: relative;
+}
+
 .nav-links a {
+    color: white;
     text-decoration: none;
+    font-size: 18px;
+}
+.nav-links .active {
     font-weight: bold;
-    color: rgb(255, 255, 255);
-    padding: 8px;
-    transition: color 0.3s ease;
+    border-bottom: 2px solid white;
 }
 
 .nav-links a:hover {
@@ -54,47 +60,35 @@ body {
 }
 
 /* Profile Dropdown */
-/* Profile Dropdown */
 .profile-dropdown {
     position: relative;
-    cursor: pointer;
+    display: inline-block;
 }
 
-.profile-dropdown .dropdown {
+.profile-dropdown-content {
     display: none;
     position: absolute;
+    background: white;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    border-radius: 5px;
     right: 0;
-    background: rgb(255, 255, 255);
-    border-radius: 8px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    min-width: 150px;
-    text-align: left;
-    padding: 0;
-    list-style: none;
-    z-index: 10;
+    min-width: 140px;
+    padding: 8px 0;
 }
 
-.profile-dropdown .dropdown li {
-    padding: 10px;
-}
-
-.profile-dropdown .dropdown a {
+.profile-dropdown-content a {
     display: block;
+    padding: 10px;
+    color: #333;
     text-decoration: none;
-    color: black;
-    padding: 10px;
-    transition: background 0.3s;
+    font-size: 16px;
 }
 
-.profile-dropdown .dropdown a:hover {
-    background: #ff5722;
-    color: white;
+.profile-dropdown-content a:hover {
+    background: #f1c27d;
+    color: #000;
 }
 
-/* Show dropdown on hover */
-.profile-dropdown:hover .dropdown {
-    display: block;
-}
 /* Show dropdown on hover */
 .profile-dropdown:hover .profile-dropdown-content {
     display: block;
@@ -121,11 +115,6 @@ body {
         padding: 10px;
         width: 200px;
     }
-
-    .nav-links.active {
-        display: flex;
-    }
-
     .hamburger {
         display: block;
     }

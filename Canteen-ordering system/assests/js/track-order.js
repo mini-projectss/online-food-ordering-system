@@ -1,4 +1,4 @@
-document.addEventListener("DOMContentLoaded", function () {
+  document.addEventListener("DOMContentLoaded", function () {
     // Load order details from localStorage
     let orderDetails = JSON.parse(localStorage.getItem("orderDetails")) || [];
     let orderId = localStorage.getItem("orderId") || "Not Available";
@@ -54,5 +54,20 @@ document.addEventListener("DOMContentLoaded", function () {
         if ("Notification" in window && Notification.permission === "granted") {
             new Notification("Order Update", { body: message });
         }
+    }
+});
+// Navbar toggle for mobile
+document.addEventListener("DOMContentLoaded", function () {
+    const hamburger = document.querySelector(".hamburger");
+    const navLinks = document.querySelector(".nav-links");
+
+    if (hamburger && navLinks) {
+        hamburger.addEventListener("click", function () {
+            // Toggle the 'show' class on navLinks to display the menu
+            navLinks.classList.toggle("show");
+
+            // Toggle the 'active' class on hamburger to change icon to cross
+            hamburger.classList.toggle("active");
+        });
     }
 });

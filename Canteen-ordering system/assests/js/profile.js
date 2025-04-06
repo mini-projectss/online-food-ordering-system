@@ -8,6 +8,20 @@ const firebaseConfig = {
     measurementId: "G-BL8BCFH88B"
 };
 
+// Navbar toggle for mobile
+document.addEventListener("DOMContentLoaded", function () {
+    const hamburger = document.querySelector(".hamburger");
+    const navLinks = document.querySelector(".nav-links");
+
+    if (hamburger && navLinks) {
+        hamburger.addEventListener("click", function () {
+            navLinks.classList.toggle("show");
+            hamburger.innerHTML = navLinks.classList.contains("show") ? "✖" : "☰";
+        });
+    }
+});  
+    
+
 // Initialize Firebase
 firebase.initializeApp(firebaseConfig);
 const auth = firebase.auth();
@@ -27,7 +41,7 @@ document.addEventListener("DOMContentLoaded", function () {
             window.location.href = "../auth/user/login.html";
             return;
         }
-
+        
         // Fetch user data from Firestore
         db.collection("users").doc(user.uid).get()
             .then(doc => {

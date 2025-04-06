@@ -19,10 +19,14 @@
             <li><a href="cart.html">🛒 Cart</a></li>
             <li><a href="track-order.html">📦 Order Status</a></li>
             <li class="profile-dropdown">
-                <a href="profile.html" class="active">👤 Profile ▾</a>
-                <ul class="dropdown">
-                    <li><a href="profile.html">View Profile</a></li>
-                    <li><a href="#" id="logout">🚪 Logout</a></li>
+                <div class="profile-dropdown">
+                    <a href="#"  class="active">👤 Profile ▾</a>
+                    <div class="profile-dropdown-content">
+                        <a href="profile.html">View Profile</a>
+                        <a href="../auth/user/login.html">Logout</a>
+                    </div>
+                </div>
+
                 </ul>
             </li>
         </ul>
@@ -42,7 +46,6 @@
             </div>  
             <div class="profile-actions">
                 <a href="update_profile.html" class="btn">Update Profile</a>
-                <a href="#" class="btn delete-btn">Logout</a>
             </div>
         </div>
     </div>
@@ -51,7 +54,6 @@
     <footer class="footer">
         <section class="box-container">
             <div class="box">
-                <img src="images/email-icon.png" alt="">
                 <h3>Our Email</h3>
                 <a href="mailto:vu1f2324@pvppcoe.ac.in">vu1f2324@pvppcoe.ac.in</a>
             </div>

@@ -7,21 +7,27 @@
     <link rel="stylesheet" href="../assests/css/track-order.css">
 </head>
 <body>
+    <!-- Navbar -->
     <nav class="navbar">
-        <div class="logo">Canteen 🍽️</div>
-        <ul class="nav-links">
-            <li><a href="menu.html">Menu</a></li>
-            <li><a href="cart.html">🛒 Cart</a></li>
-            <li><a href="track-order.html">📦 Order Status</a></li>
-            <li class="profile-dropdown">
-                <a href="profile.html">👤 Profile ▾</a>
-                <ul class="dropdown">
-                    <li><a href="profile.html">View Profile</a></li>
-                    <li><a href="#" id="logout">🚪 Logout</a></li>
-                </ul>
-            </li>
-        </ul>
-    </nav>
+      <div class="logo">Canteen 🍽️</div>
+      <div class="hamburger" onclick="toggleMenu()">☰</div>
+      <ul class="nav-links">
+          <li><a href="menu.html">Menu</a></li>
+          <li><a href="cart.html">🛒 Cart</a></li>
+          <li><a href="track-order.html" class="active">📦 Order Status</a></li>
+          <li class="profile-dropdown">
+              <div class="profile-dropdown">
+                  <a href="#">👤 Profile ▾</a>
+                  <div class="profile-dropdown-content">
+                      <a href="profile.html">View Profile</a>
+                      <a href="user.html">Logout</a>
+                  </div>
+              </div>
+
+              </ul>
+          </li>
+      </ul>
+  </nav>
 
     <!-- Track Order Container -->
     <div class="track-order-container">
