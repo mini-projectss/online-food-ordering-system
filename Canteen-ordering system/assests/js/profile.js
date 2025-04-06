@@ -8,6 +8,25 @@ const firebaseConfig = {
     measurementId: "G-BL8BCFH88B"
 };
 
+// Initialize Firebase
+firebase.initializeApp(firebaseConfig);
+const auth = firebase.auth();
+const db = firebase.firestore();
+
+// Profile page elements
+const profileName = document.getElementById("profile-name");
+const profileEmail = document.getElementById("profile-email");
+const profilePhone = document.getElementById("profile-phone");
+const profileRole = document.getElementById("profile-role");
+const logoutBtn = document.getElementById("logout");
+
+// Order history page elements
+const orderList = document.getElementById("order-history");
+const expandOrdersBtn = document.getElementById("expand-orders-btn");
+
+// State to manage the toggling of orders
+let isOrderHistoryExpanded = false;
+
 // Navbar toggle for mobile
 document.addEventListener("DOMContentLoaded", function () {
     const hamburger = document.querySelector(".hamburger");
@@ -19,29 +38,14 @@ document.addEventListener("DOMContentLoaded", function () {
             hamburger.innerHTML = navLinks.classList.contains("show") ? "✖" : "☰";
         });
     }
-});  
     
-
-// Initialize Firebase
-firebase.initializeApp(firebaseConfig);
-const auth = firebase.auth();
-const db = firebase.firestore();
-
-document.addEventListener("DOMContentLoaded", function () {
-    // Profile elements
-    const profileName = document.getElementById("profile-name");
-    const profileEmail = document.getElementById("profile-email");
-    const profilePhone = document.getElementById("profile-phone");
-    const profileRole = document.getElementById("profile-role");
-    const logoutBtn = document.getElementById("logout");
-
     // Check authentication state
     auth.onAuthStateChanged(user => {
         if (!user) {
             window.location.href = "../auth/user/login.html";
             return;
         }
-        
+
         // Fetch user data from Firestore
         db.collection("users").doc(user.uid).get()
             .then(doc => {
@@ -62,6 +66,9 @@ document.addEventListener("DOMContentLoaded", function () {
                 profileName.textContent = "Error loading data";
                 profileEmail.textContent = "Please refresh the page";
             });
+
+        // Load initial order history (show 3 orders by default)
+        loadOrderHistory(3);
     });
 
     // Logout functionality
@@ -77,23 +84,36 @@ document.addEventListener("DOMContentLoaded", function () {
             });
     });
 
-    // Initialize order history
-    const orderList = document.getElementById("order-history");
+    // Expand order history functionality
+    expandOrdersBtn.addEventListener("click", function () {
+        isOrderHistoryExpanded = !isOrderHistoryExpanded;
+        if (isOrderHistoryExpanded) {
+            loadOrderHistory(); // Show all orders
+            expandOrdersBtn.textContent = "Collapse Orders";
+        } else {
+            loadOrderHistory(3); // Show 3 orders
+            expandOrdersBtn.textContent = "View All Orders";
+        }
+    });
+});
+
+// Function to load order history from Firestore
+function loadOrderHistory(limit = 3) {
     orderList.innerHTML = "<li>Loading order history...</li>";
 
-    // Fetch order history from Firestore
     auth.onAuthStateChanged(user => {
         if (user) {
             db.collection("users").doc(user.uid).collection("orders")
                 .orderBy("createdAt", "desc")
+                .limit(limit)
                 .get()
                 .then(querySnapshot => {
-                    orderList.innerHTML = "";
+                    orderList.innerHTML = ""; // Clear existing list
                     if (querySnapshot.empty) {
                         orderList.innerHTML = "<li>No orders found</li>";
                         return;
                     }
-                    
+
                     querySnapshot.forEach(doc => {
                         const order = doc.data();
                         const li = document.createElement("li");
@@ -111,4 +131,4 @@ document.addEventListener("DOMContentLoaded", function () {
                 });
         }
     });
-});
+}

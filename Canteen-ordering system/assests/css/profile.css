@@ -223,6 +223,33 @@ body, html {
     }
 }
 
+/* Order History Styles */
+.order-history {
+    margin-top: 20px;
+}
+
+.order-item {
+    margin-bottom: 10px;
+    padding: 10px;
+    background-color: #f9f9f9;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+#expand-orders-btn {
+    margin-top: 10px;
+    padding: 10px 20px;
+    background-color: #008CBA;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+#expand-orders-btn:hover {
+    background-color: #005f73;
+}
+
 /* Footer Styles */
 .footer {
     background-color: #333; /* Dark background for footer */
