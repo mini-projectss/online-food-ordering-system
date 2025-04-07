@@ -1,3 +1,4 @@
+// Firebase configuration
 const firebaseConfig = {
     apiKey: "AIzaSyAiJplG7u_x_ijhxC9AD9F2JPYoU0k2Lnk",
     authDomain: "online-cateen-ordeing.firebaseapp.com",
@@ -38,7 +39,7 @@ document.addEventListener("DOMContentLoaded", function () {
             hamburger.innerHTML = navLinks.classList.contains("show") ? "✖" : "☰";
         });
     }
-    
+
     // Check authentication state
     auth.onAuthStateChanged(user => {
         if (!user) {
