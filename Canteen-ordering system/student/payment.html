@@ -1,56 +1,37 @@
-
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Payment | College Canteen</title>
     <link rel="stylesheet" href="../assests/css/payment.css">
-
-<!-- Firebase -->
-<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
-<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
-<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
-
-<!-- Razorpay -->
-<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
-
-<!-- Your JS -->
-<script src="../assests/js/payment.js"></script>
 </head>
-
-
 <body>
     <!-- Navbar -->
     <nav class="navbar">
         <div class="logo">Canteen 🍽️</div>
-
         <div class="hamburger" onclick="toggleMenu()">☰</div>
         <ul class="nav-links">
-            <li><a href="menu.html" class="active">Menu</a></li>
+            <li><a href="menu.html">Menu</a></li>
             <li><a href="cart.html">🛒 Cart</a></li>
             <li><a href="track-order.html">📦 Order Status</a></li>
             <li class="profile-dropdown">
                 <div class="profile-dropdown">
                     <a href="#">👤 Profile ▾</a>
                     <div class="profile-dropdown-content">
-                        <a href="#">View Profile</a>
-                        <a href="#">Logout</a>
+                        <a href="profile.html">View Profile</a>
+                        <a href="#" id="logout">Logout</a>
                     </div>
                 </div>
-    
-        </ul>
-        </li>
+            </li>
         </ul>
     </nav>
 
     <!-- Payment Container -->
     <div class="payment-container">
         <h2>💳 Payment</h2>
-
-        <!-- Order Summary -->
         <div class="order-summary">
             <h3>📝 Order Summary</h3>
-            <p>Order ID: <span id="order-id"></span></p> <!-- Display Order ID -->
+            <p>Order ID: <span id="order-id"></span></p>
             <div id="order-items"></div>
             <h3>Total Amount: ₹<span id="total-amount">0</span></h3>
         </div>
@@ -61,115 +42,30 @@
             <label><input type="radio" name="payment" value="cash"> Cash on Delivery</label>
         </div>
 
-        <!-- Status Message -->
         <p id="status-text"></p>
-
-        <!-- Payment Button -->
         <button id="pay-btn" class="payment-btn" disabled>Proceed to Payment</button>
-
-        <!-- Checkout Button for Cash on Delivery -->
         <button id="checkout-btn" class="payment-btn" disabled>Checkout (Cash on Delivery)</button>
     </div>
 
+    <!-- Scripts -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+    <script src="../assests/js/payment.js"></script>
 
     <script>
-        // Firebase Auth State Listener
+        // Simplified auth check
         auth.onAuthStateChanged((user) => {
-          if (!user) {
-            // If user is not logged in, redirect to login page
-            window.location.href = '../auth/user/login.html'; // or admin/login.html
-          } else {
-            // If user is logged in, check their role
-            db.collection('users').doc(user.uid).get().then((doc) => {
-              const userData = doc.data();
-              const role = userData.role;
-      
-              // Redirect based on role
-              if (role === 'student' && !window.location.pathname.includes('/student/')) {
-                window.location.href = '../student/menu.html';
-              } else if (role === 'admin' && !window.location.pathname.includes('/admin/')) {
-                window.location.href = '../admin/dashboard.html';
-              }
-            }).catch((error) => {
-              console.error('Error fetching user data:', error);
-              auth.signOut(); // Sign out the user if there's an error
-              window.location.href = '../auth/user/login.html'; // Redirect to login
-            });
-          }
-        });
-      </script>
-
-
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            // Generate a unique order ID
-            const orderId = 'ORD-' + new Date().getTime() + '-' + Math.floor(Math.random() * 1000);
-
-            // Store order ID in localStorage
-            localStorage.setItem("orderId", orderId);
-
-            // Load order details from localStorage
-            let cart = JSON.parse(localStorage.getItem("cart")) || [];
-
-            if (cart.length === 0) {
-                document.getElementById("status-text").textContent = "⚠️ Your cart is empty!";
-                return; // Exit if there are no items in the cart
+            if (!user) {
+                window.location.href = '../auth/user/login.html';
             }
-
-            // Calculate the total amount
-            let totalAmount = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
-
-            // Display cart items
-            let orderItemsDiv = document.getElementById("order-items");
-            orderItemsDiv.innerHTML = cart.map(item => `
-                <p>${item.name} (x${item.quantity}) - ₹${item.price * item.quantity}</p>
-            `).join("");
-
-            // Display the order ID in the summary
-            document.getElementById("order-id").textContent = orderId;
-
-            // Show total amount
-            document.getElementById("total-amount").textContent = totalAmount;
-
-            // Toggle the active button based on payment selection
-            const payButton = document.getElementById("pay-btn");
-            const checkoutButton = document.getElementById("checkout-btn");
-            const paymentRadios = document.querySelectorAll('input[name="payment"]');
-
-            // Function to handle button enabling/disabling based on payment method
-            function togglePaymentButtons() {
-                const selectedPayment = document.querySelector('input[name="payment"]:checked').value;
-
-                if (selectedPayment === "razorpay") {
-                    payButton.disabled = false; // Enable "Proceed to Payment"
-                    checkoutButton.disabled = true; // Disable "Checkout"
-                } else if (selectedPayment === "cash") {
-                    payButton.disabled = true; // Disable "Proceed to Payment"
-                    checkoutButton.disabled = false; // Enable "Checkout"
-                }
-            }
-
-            // Set initial state
-            togglePaymentButtons();
-
-            // Listen for changes in payment method selection
-            paymentRadios.forEach(radio => {
-                radio.addEventListener("change", togglePaymentButtons);
-            });
-
-            // Handle UPI Payment (Proceed to Payment button)
-           
-
-            // Handle Cash on Delivery (Checkout button)
-            checkoutButton.addEventListener("click", function () {
-                document.getElementById("status-text").textContent = "✅ Cash on Delivery Selected. Your order is confirmed!";
-                // Store order details and payment status in localStorage
-                localStorage.setItem("paymentStatus", "Cash on Delivery");
-                localStorage.setItem("orderDetails", JSON.stringify(cart)); // Store the cart (order details)
-                localStorage.removeItem("cart"); // Clear cart after payment
-                window.location.href = "track-order.html"; // Redirect to success page
-            });
         });
+
+        function toggleMenu() {
+            const navLinks = document.querySelector('.nav-links');
+            navLinks.classList.toggle('active');
+        }
     </script>
 </body>
 </html>
