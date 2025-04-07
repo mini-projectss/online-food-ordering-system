@@ -1,14 +1,16 @@
 const menuItems = [
-    { name: "Pizza", price: 200, image: "../assests/images/menu-items/pizza.jpg" },
-    { name: "Burger", price: 120, image: "../assests/images/menu-items/burger.png" },
-    { name: "Pasta", price: 150, image: "../assests/images/menu-items/pasta1.jpeg" },
-    { name: "Maggi", price: 100, image: "../assests/images/menu-items/maggi.webp" },
-    { name: "Biryani", price: 200, image: "../assests/images/menu-items/chickenbiryani.webp" },
-    { name: "Momo", price: 80, image: "../assests/images/menu-items/momos.jpeg" },
-    { name: "FrenchFries", price: 90, image: "../assests/images/menu-items/FF.jpg" },
-    { name: "Coffee", price: 80, image: "../assests/images/menu-items/coffee.jpg" },
-    { name: "Milkshake", price: 90, image: "../assests/images/menu-items/milkshake.jpg" },
-    { name: "Drinks", price: 50, image: "../assests/images/menu-items/drink.png" }
+    { name: "Vada Pav", price: 15, image: "../assests" },
+    { name: "Samosa Pav", price: 17, image: "../assests/images/menu-items/burger.png" },
+    { name: "Misal pav", price: 40, image: "../assests/images/menu-items/pasta1.jpeg" },
+    { name: "Biryani", price: 100, image: "../assests/images/menu-items/chickenbiryani.webp" },
+    { name: "Veg Fried Rice", price: 50, image: "../assests/images/menu-items/momos.jpeg" },
+    { name: "Chicken Schezwan Fried Rice", price: 60, image: "../assests/images/menu-items/FF.jpg" },
+    { name: "Masala Dosa", price: 50, image: "../assests/images/menu-items/drink.png" }
+    { name: "Veg Thali", price: 80, image: "../assests/images/menu-items/drink.png" }
+    { name: "Coffee", price: 15, image: "../assests/images/menu-items/coffee.jpg" },
+    { name: "Tea", price: 10, image: "../assests/images/menu-items/milkshake.jpg" },
+    { name: "Smoodh", price: 10, image: "../assests/images/menu-items/drink.png" }
+    { name: "Pepsi", price: 20, image: "../assests/images/menu-items/drink.png" }
 ];
 
 const categories = {
