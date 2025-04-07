@@ -4,9 +4,17 @@ const menuItems = [
     { name: "Misal pav", price: 40, image: "../assests/images/menu-items/misal pav.jpg" },
     { name: "Biryani", price: 100, image: "../assests/images/menu-items/chickenbiryani.webp" },
     { name: "Veg Fried Rice", price: 50, image: "../assests/images/menu-items/Vegetable-Fried-Rice-2-3.jpg" },
+    { name: "Schezwan Noodels", price: 50, image: "../assests/images/menu-items/veg noodels.jpg" },
+    { name: "Puri Bhaji", price: 50, image: "../assests/images/menu-items/puri.avif" },
+    { name: "Dal Rice", price: 50, image: "../assests/images/menu-items/dal chawal.jpg" },
+    { name: "Dal Khichdi", price: 80, image: "../assests/images/menu-items/dalkhichdi.jpg" },
     { name: "Chicken Schezwan Fried Rice", price: 60, image: "../assests/images/menu-items/chick fried rice.avif" },
+    { name: "Chicken Schezwan Noodles", price: 60, image: "../assests/images/menu-items/chicken noodels.jpg" },
     { name: "Masala Dosa", price: 50, image: "../assests/images/menu-items/masala_dosa_1.webp" },
     { name: "Veg Thali", price: 80, image: "../assests/images/menu-items/veg thali.jpg" },
+    { name: "Chapati Sabji", price: 50, image: "../assests/images/menu-items/chapati.avif" },
+    { name: "Egg Bhurji Chapati", price: 60, image: "../assests/images/menu-items/egg chapati.jpg" },
+    { name: "Dahi Samosa", price: 20, image: "../assests/images/menu-items/dahi samosa.webp" },
     { name: "Coffee", price: 15, image: "../assests/images/menu-items/coffee.jpg" },
     { name: "Tea", price: 10, image: "../assests/images/menu-items/tea.webp" },
     { name: "Smoodh", price: 10, image: "../assests/images/menu-items/soomdh.jpg" },
@@ -15,8 +23,8 @@ const menuItems = [
 
 const categories = {
     "All": menuItems,
-    "Veg": menuItems.filter(item => ["Vada Pav", "Samosa Pav", "Misal Pav", "Veg Fried Rice", "Masala Dosa", "Veg Thali"].includes(item.name)),
-    "Non-Veg": menuItems.filter(item => ["Biryani","Chicken Schezwan Fried Rice"].includes(item.name)),
+    "Veg": menuItems.filter(item => ["Vada Pav", "Samosa Pav", "Misal Pav", "Veg Fried Rice","Schezwan Noodels", "Masala Dosa", "Veg Thali", "Dal Rice","Dal Khichdi", "Puri Bhaji", "Chapati Sabji","Dahi Samosa"].includes(item.name)),
+    "Non-Veg": menuItems.filter(item => ["Biryani","Chicken Schezwan Fried Rice", "Chicken Schezwan Noodles", "Egg Bhurji Chapati"].includes(item.name)),
     "Beverages": menuItems.filter(item => ["Coffee", "Tea","Smoodh", "Pepsi"].includes(item.name)),
 };
 
