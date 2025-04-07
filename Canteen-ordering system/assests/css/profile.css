@@ -168,6 +168,41 @@ body {
     color: #222;
     text-align: center;
 }
+#view-all-orders-btn {
+    background-color: #06d6a0;
+    color: white;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background 0.3s;
+    margin-top: 20px;
+    display: block;
+    width: 100%;
+}
+
+#view-all-orders-btn:hover {
+    background-color: #05c393;
+}
+
+#show-less-orders-btn {
+    background-color: #ff6f61;
+    color: white;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background 0.3s;
+    margin-top: 20px;
+    display: block;
+    width: 100%;
+}
+
+#show-less-orders-btn:hover {
+    background-color: #e64c3c;
+}
 
 /* Footer */
 .footer {

@@ -85,29 +85,36 @@ document.addEventListener("DOMContentLoaded", function () {
             });
     });
 
-    // Expand order history functionality
-    expandOrdersBtn.addEventListener("click", function () {
-        isOrderHistoryExpanded = !isOrderHistoryExpanded;
-        if (isOrderHistoryExpanded) {
-            loadOrderHistory(); // Show all orders
-            expandOrdersBtn.textContent = "Collapse Orders";
-        } else {
-            loadOrderHistory(3); // Show 3 orders
-            expandOrdersBtn.textContent = "View All Orders";
-        }
-    });
 });
 
-// Function to load order history from Firestore
-function loadOrderHistory(limit = 3) {
+document.addEventListener("DOMContentLoaded", function () {
+    const viewAllOrdersBtn = document.getElementById("view-all-orders-btn");
+    const showLessOrdersBtn = document.getElementById("show-less-orders-btn");
+
+    if (viewAllOrdersBtn) {
+        viewAllOrdersBtn.addEventListener("click", function () {
+            loadOrderHistory(null); // Load all orders
+            viewAllOrdersBtn.style.display = "none";
+            showLessOrdersBtn.style.display = "block"; // Show "Show Less" button
+        });
+    }
+});
+
+
+function loadOrderHistory(limit = null) {
     orderList.innerHTML = "<li>Loading order history...</li>";
 
     auth.onAuthStateChanged(user => {
         if (user) {
-            db.collection("users").doc(user.uid).collection("orders")
-                .orderBy("createdAt", "desc")
-                .limit(limit)
-                .get()
+            let ordersRef = db.collection("users").doc(user.uid).collection("orders")
+                .orderBy("createdAt", "desc");
+
+            // If a limit is set, apply it
+            if (limit !== null) {
+                ordersRef = ordersRef.limit(limit);
+            }
+
+            ordersRef.get()
                 .then(querySnapshot => {
                     orderList.innerHTML = ""; // Clear existing list
                     if (querySnapshot.empty) {
@@ -132,4 +139,9 @@ function loadOrderHistory(limit = 3) {
                 });
         }
     });
+}
+function showLessOrders() {
+    loadOrderHistory(3); // Load only 3 orders
+    document.getElementById("view-all-orders-btn").style.display = "block";
+    document.getElementById("show-less-orders-btn").style.display = "none";
 }
