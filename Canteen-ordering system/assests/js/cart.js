@@ -129,8 +129,9 @@ document.addEventListener("DOMContentLoaded", function () {
             return;
         }
 
-        let orderType = document.querySelector('input[name="orderType"]:checked').value;
-        let scheduleTime = scheduleTimeInput.value;
+        const orderType = document.querySelector('input[name="orderType"]:checked').value;
+        localStorage.setItem("orderType", orderType);
+        
 
         if (orderType === "schedule" && (!scheduleTime || new Date(scheduleTime) < new Date())) {
             alert("Please select a valid future schedule time.");

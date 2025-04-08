@@ -5,130 +5,94 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Order Status | College Canteen</title>
     <link rel="stylesheet" href="../assests/css/track-order.css">
+    <style>
+        /* Add these styles at the top */
+        .orders-list {
+            max-height: 400px;
+            overflow-y: auto;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 20px 0;
+        }
+        
+        .order-card {
+            background: white;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .order-card h3 {
+            margin-top: 0;
+            color: #333;
+        }
+        
+        .order-items p {
+            margin: 5px 0;
+            color: #666;
+        }
+    </style>
 </head>
 <body>
-    <!-- Navbar -->
+    <!-- Navbar (keep your existing navbar) -->
     <nav class="navbar">
-      <div class="logo">Canteen 🍽️</div>
-      <div class="hamburger" onclick="toggleMenu()">☰</div>
-      <ul class="nav-links">
-          <li><a href="menu.html">Menu</a></li>
-          <li><a href="cart.html">🛒 Cart</a></li>
-          <li><a href="track-order.html" class="active">📦 Order Status</a></li>
-          <li class="profile-dropdown">
-              <div class="profile-dropdown">
-                  <a href="#">👤 Profile ▾</a>
-                  <div class="profile-dropdown-content">
-                      <a href="profile.html">View Profile</a>
-                      <a href="../auth/user/login.html">Logout</a>
-                  </div>
-              </div>
+        <div class="logo">Canteen 🍽️</div>
+        <div class="hamburger" onclick="toggleMenu()">☰</div>
+        <ul class="nav-links">
+            <li><a href="menu.html">Menu</a></li>
+            <li><a href="cart.html">🛒 Cart</a></li>
+            <li><a href="track-order.html" class="active">📦 Order Status</a></li>
+            <li class="profile-dropdown">
+                <div class="profile-dropdown">
+                    <a href="#">👤 Profile ▾</a>
+                    <div class="profile-dropdown-content">
+                        <a href="profile.html">View Profile</a>
+                        <a href="../auth/user/login.html">Logout</a>
+                    </div>
+                </div>
+            </li>
+        </ul>
+    </nav>
 
-              </ul>
-          </li>
-      </ul>
-  </nav>
-
-    <!-- Track Order Container -->
+    <!-- Updated Track Order Container -->
     <div class="track-order-container">
-        <h2>📦 Track Order Status</h2>
-        
-        <!-- Order ID Display -->
-        <div class="order-id">
-            <h3>Order ID: <span id="order-id">Not Available</span></h3>
+        <h2>📦 Your Recent Orders</h2>
+        <div id="orders-container">
+            <!-- Orders will be dynamically inserted here -->
         </div>
-
-         <!-- Order Summary -->
-         <div class="order-summary">
-            <h3>📝 Order Summary</h3>
-            <div id="order-items"></div> <!-- Dynamic Order List -->
-            <h3>Total Amount: ₹<span id="total-amount">0</span></h3>
-        </div>
-
-        <!-- Order Status -->
-        <div class="order-status">
-            <h3>📍 Current Status</h3>
-            <p id="status-text">Your order is being processed.</p> <!-- Default message -->
-        </div>
-
-
-
-        <!-- Back to Menu Button -->
         <a href="menu.html" class="back-btn">Back to Menu</a>
     </div>
 
-
+    <!-- Firebase and other scripts -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+    
     <script>
-        // Firebase Auth State Listener
-        auth.onAuthStateChanged((user) => {
-          if (!user) {
-            // If user is not logged in, redirect to login page
-            window.location.href = '../auth/user/login.html'; // or admin/login.html
-          } else {
-            // If user is logged in, check their role
-            db.collection('users').doc(user.uid).get().then((doc) => {
-              const userData = doc.data();
-              const role = userData.role;
-      
-              // Redirect based on role
-              if (role === 'student' && !window.location.pathname.includes('/student/')) {
-                window.location.href = '../student/menu.html';
-              } else if (role === 'admin' && !window.location.pathname.includes('/admin/')) {
-                window.location.href = '../admin/dashboard.html';
-              }
-            }).catch((error) => {
-              console.error('Error fetching user data:', error);
-              auth.signOut(); // Sign out the user if there's an error
-              window.location.href = '../auth/user/login.html'; // Redirect to login
-            });
-          }
-        });
-      </script>
-
-
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            // Load order details from localStorage
-            let orderDetails = JSON.parse(localStorage.getItem("orderDetails")) || []; // Retrieve data by correct key
-
-            // If order details exist, display them
-            if (orderDetails.length > 0) {
-                // Calculate the total amount
-                let totalAmount = orderDetails.reduce((sum, item) => sum + item.price * item.quantity, 0);
-
-                // Display order items
-                let orderItemsDiv = document.getElementById("order-items");
-                orderItemsDiv.innerHTML = orderDetails.map(item => `
-                    <p>${item.name} (x${item.quantity}) - ₹${item.price * item.quantity}</p>
-                `).join("");
-
-                // Show the total amount
-                document.getElementById("total-amount").textContent = totalAmount;
-            } else {
-                document.getElementById("order-items").innerHTML = "<p>No order details available.</p>";
-                document.getElementById("total-amount").textContent = "0";
-            }
-
-            // Retrieve and display payment status
-            let paymentStatus = localStorage.getItem("paymentStatus") || "Order not yet confirmed.";
-            document.getElementById("status-text").textContent = `Payment Status: ${paymentStatus}`;
-
-            // Retrieve and display order ID
-            let orderId = localStorage.getItem("orderId") || "Not Available"; // Fetch Order ID from localStorage
-            document.getElementById("order-id").textContent = orderId;
-        });
+      // Your Firebase configuration (replace with your actual Firebase config)
+      var firebaseConfig = {
+        apiKey: "AIzaSyAiJplG7u_x_ijhxC9AD9F2JPYoU0k2Lnk",
+    authDomain: "online-cateen-ordeing.firebaseapp.com",
+    projectId: "online-cateen-ordeing",
+    storageBucket: "online-cateen-ordeing.firebasestorage.app",
+    messagingSenderId: "1088334175531",
+    appId: "1:1088334175531:web:586611bcf1bbba05f5f96e",
+    measurementId: "G-BL8BCFH88B"
+      };
+    
+      // Initialize Firebase
+      firebase.initializeApp(firebaseConfig);
+    
+      // Create global variables for auth and database
+      const auth = firebase.auth();
+      const db = firebase.firestore();
     </script>
+    
+    <!-- Add this new track-order.js script -->
+    <script src="../assests/js/track-order.js"></script>
 
-    <script src="path/to/track-order.js"></script>
-     
-    <script>
-      // Request notification permission
-      if ("Notification" in window) {
-          Notification.requestPermission().then(permission => {
-              console.log("Notification permission:", permission);
-          });
-      }
-  </script>
-
+    
 </body>
 </html>
