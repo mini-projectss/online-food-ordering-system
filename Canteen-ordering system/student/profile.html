@@ -50,13 +50,21 @@
 <!-- Order History Section -->
 <div class="order-history">
     <h3>Order History</h3>
-    <div id="order-history">
-        <!-- Recent Orders will be displayed here dynamically -->
-        <p>Loading order history...</p>
+    <div class="order-cards-container" id="order-cards-container">
+        <!-- Order cards will be inserted here -->
+        <div class="loading-text">Loading orders...</div>
     </div>
-    <!-- Expand/Collapse Button -->
-    <button id="view-all-orders-btn">View All Orders</button>
-    <button id="show-less-orders-btn" style="display: none;" onclick="showLessOrders()">Show Less</button>
+    <div class="order-controls">
+        <button id="view-all-orders-btn">
+            <i class="fas fa-chevron-down"></i>
+            View All Orders
+        </button>
+        <button id="show-less-orders-btn" style="display: none;" onclick="showLessOrders()">
+            <i class="fas fa-chevron-up"></i>
+            Show Less
+        </button>
+    </div>
+</div>
 
 </div>
 

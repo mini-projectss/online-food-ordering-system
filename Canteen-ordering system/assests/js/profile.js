@@ -102,46 +102,86 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
 function loadOrderHistory(limit = null) {
-    orderList.innerHTML = "<li>Loading order history...</li>";
+    const container = document.getElementById("order-cards-container");
+    container.innerHTML = '<div class="loading-text">Loading orders...</div>';
 
     auth.onAuthStateChanged(user => {
         if (user) {
-            let ordersRef = db.collection("users").doc(user.uid).collection("orders")
+            let ordersRef = db.collection("orders")
+                .where("userId", "==", user.uid)
                 .orderBy("createdAt", "desc");
 
-            // If a limit is set, apply it
-            if (limit !== null) {
-                ordersRef = ordersRef.limit(limit);
-            }
+            if (limit) ordersRef = ordersRef.limit(limit);
 
-            ordersRef.get()
-                .then(querySnapshot => {
-                    orderList.innerHTML = ""; // Clear existing list
-                    if (querySnapshot.empty) {
-                        orderList.innerHTML = "<li>No orders found</li>";
-                        return;
-                    }
+            ordersRef.get().then(querySnapshot => {
+                container.innerHTML = "";
+                
+                if (querySnapshot.empty) {
+                    container.innerHTML = '<div class="loading-text">No orders found</div>';
+                    return;
+                }
 
-                    querySnapshot.forEach(doc => {
-                        const order = doc.data();
-                        const li = document.createElement("li");
-                        li.innerHTML = `
-                            <strong>Order ID:</strong> ${order.orderId}<br>
-                            <strong>Date:</strong> ${new Date(order.createdAt?.toDate()).toLocaleString()}<br>
-                            <strong>Total Items:</strong> ${order.cart?.length || 0}
-                        `;
-                        orderList.appendChild(li);
-                    });
-                })
-                .catch(error => {
-                    console.error("Error fetching orders:", error);
-                    orderList.innerHTML = "<li>Error loading orders</li>";
+                querySnapshot.forEach(doc => {
+                    const order = doc.data();
+                    const orderDate = order.createdAt?.toDate();
+                    const orderCard = createOrderCard(order, orderDate);
+                    container.appendChild(orderCard);
                 });
+            }).catch(error => {
+                console.error("Error fetching orders:", error);
+                container.innerHTML = '<div class="loading-text">Error loading orders</div>';
+            });
         }
     });
 }
+
+function createOrderCard(order, orderDate) {
+    const card = document.createElement("div");
+    card.className = "order-card";
+
+    const itemsList = order.cart.map(item => `
+        <li class="order-item">
+            <span class="item-name">${item.name}</span>
+            <span class="item-qty">x${item.quantity}</span>
+            <span class="item-price">₹${item.price * item.quantity}</span>
+        </li>
+    `).join("");
+
+    card.innerHTML = `
+        <div class="order-header">
+            <div class="order-id">Order ID: ${order.orderId}</div>
+            <div class="order-date">${orderDate.toLocaleDateString('en-IN', { 
+                weekday: 'short', 
+                year: 'numeric', 
+                month: 'short', 
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
+            })}</div>
+        </div>
+        <ul class="order-items">${itemsList}</ul>
+        <div class="order-total">
+            Total: ₹${order.totalAmount}
+            <div style="font-size:0.9em;color:#666;margin-top:5px">
+                Payment: ${order.paymentResponse.method || 'Online'}
+            </div>
+        </div>
+    `;
+
+    return card;
+}
+
+// Keep existing showLessOrders function
+// Update the button toggle in your existing functions
 function showLessOrders() {
-    loadOrderHistory(3); // Load only 3 orders
-    document.getElementById("view-all-orders-btn").style.display = "block";
+    loadOrderHistory(3);
+    document.getElementById("view-all-orders-btn").style.display = "flex";
     document.getElementById("show-less-orders-btn").style.display = "none";
 }
+
+// In your view all orders event listener
+document.getElementById("view-all-orders-btn").addEventListener("click", function() {
+    loadOrderHistory(null);
+    this.style.display = "none";
+    document.getElementById("show-less-orders-btn").style.display = "flex";
+});
