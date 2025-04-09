@@ -1,33 +1,73 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Admin - Manage Orders</title>
-    <link rel="stylesheet" href="../assests/css/manageorder.css" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kitchen Display System</title>
+  <link rel="stylesheet" href="../assests/css/manageorder.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
-
 <body>
-    <h1>Admin Panel - Manage Orders</h1>
-    <table>
-        <thead>
-            <tr>
-                <th>Order ID</th>
-                <th>User Email</th>
-                <th>Items</th>
-                <th>Total Amount</th>
-                <th>Payment Type</th>
-                <th>Status</th>
-                <th>Update Status</th>
-            </tr>
-        </thead>
-        <tbody id="ordersTableBody">
-            <!-- Orders will be dynamically inserted here -->
-        </tbody>
-    </table>
+  <div class="container">
+    <!-- Dashboard Sidebar -->
+    <div class="dashboard">
+      <div class="status-filters">
+        <button class="filter-btn active" data-status="processing">
+          <i class="fas fa-fire"></i> Active (<span id="activeCount">0</span>)
+        </button>
+        <button class="filter-btn" data-status="serve">
+          <i class="fas fa-concierge-bell"></i> To Serve (<span id="serveCount">0</span>)
+        </button>
+        <button class="filter-btn" data-status="pinned">
+          <i class="fas fa-thumbtack"></i> Pinned (<span id="pinnedCount">0</span>)
+        </button>
+        <button class="filter-btn" data-status="finished">
+          <i class="fas fa-check-circle"></i> Finished (<span id="finishedCount">0</span>)
+        </button>
+      </div>
+      
+      <div class="indicators">
+        <div class="indicator-card new-orders">
+          <div class="indicator-content">
+            <h3>New Orders</h3>
+            <div class="count" id="newOrdersIndicator">0</div>
+          </div>
+          <div class="indicator-bar green"></div>
+        </div>
+        
+        <div class="indicator-card due-soon">
+          <div class="indicator-content">
+            <h3>Due Soon</h3>
+            <div class="count" id="dueSoonIndicator">0</div>
+          </div>
+          <div class="indicator-bar yellow"></div>
+        </div>
+        
+        <div class="indicator-card critical">
+          <div class="indicator-content">
+            <h3>Critical</h3>
+            <div class="count" id="criticalIndicator">0</div>
+          </div>
+          <div class="indicator-bar red"></div>
+        </div>
+      </div>
+      
+      <button class="home-btn" onclick="window.location.href='dashboard.html'">
+        <i class="fas fa-home"></i> Home
+      </button>
+    </div>
 
-    <script type="module" src="../assests/js/manageorder.js"></script>
+    <!-- Orders Container -->
+    <div class="orders-container">
+      <div class="orders-grid" id="ordersGrid">
+        <div class="loading-text">Loading orders...</div>
+      </div>
+    </div>
+  </div>
+  <!-- Firebase Scripts -->
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+  <script src="../assests/js/manageorder.js"></script>
 </body>
-
 </html>

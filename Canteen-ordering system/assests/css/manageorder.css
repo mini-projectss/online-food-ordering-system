@@ -1,39 +1,226 @@
-body {
-    font-family: Arial, sans-serif;
-    background-color: #f9f9f9;
+/* manage-order.css */
+:root {
+    --green: #4CAF50;
+    --yellow: #FFC107;
+    --red: #F44336;
+    --primary: #2c3e50;
+    --secondary: #2196F3;
+    --background: #f5f7fa;
+  }
+  
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', system-ui;
+  }
+  
+  body {
+    background: var(--background);
+    height: 100vh;
+  }
+  
+  .container {
+    display: flex;
+    min-height: 100vh;
+  }
+  
+  .dashboard {
+    width: 320px;
+    background: white;
     padding: 20px;
-}
-
-h1 {
-    text-align: center;
-    margin-bottom: 20px;
-}
-
-table {
-    width: 100%;
-    border-collapse: collapse;
-    background-color: #fff;
-}
-
-th,
-td {
-    padding: 12px;
-    border: 1px solid #ddd;
-    text-align: center;
-}
-
-th {
-    background-color: #4CAF50;
-    color: white;
-}
-
-tr:nth-child(even) {
-    background-color: #f2f2f2;
-}
-
-select {
-    padding: 5px;
-    border-radius: 4px;
-    border: 1px solid #ccc;
+    box-shadow: 2px 0 10px rgba(0,0,0,0.1);
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  
+  .orders-container {
+    flex: 1;
+    padding: 25px;
+    background: #f8f9fa;
+  }
+  
+  .orders-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+    max-height: calc(100vh - 50px);
+    overflow-y: auto;
+    padding: 10px;
+  }
+  
+  .order-card {
+    background: white;
+    border-radius: 15px;
+    padding: 20px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    border-left: 6px solid var(--green);
+    position: relative;
+  }
+  
+  .order-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: var(--green);
+    border-radius: 15px 15px 0 0;
+  }
+  
+  .order-card.yellow {
+    border-color: var(--yellow);
+  }
+  .order-card.yellow::before { background: var(--yellow); }
+  
+  .order-card.red {
+    border-color: var(--red);
+  }
+  .order-card.red::before { background: var(--red); }
+  
+  .order-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+  }
+  
+  .order-id {
+    font-weight: 600;
+    color: var(--primary);
+    font-size: 1.1rem;
+  }
+  
+  .timer {
+    font-size: 1.3rem;
+    font-weight: 700;
+    font-family: monospace;
+  }
+  
+  .order-items {
+    list-style: none;
+    margin: 15px 0;
+  }
+  
+  .item-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+    border-bottom: 1px solid #eee;
+  }
+  
+  .item-quantity {
+    font-weight: 600;
+    margin-right: 8px;
+    color: var(--primary);
+  }
+  
+  .item-checkbox {
+    width: 18px;
+    height: 18px;
+    accent-color: var(--green);
     cursor: pointer;
-}
+  }
+  
+  .order-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 15px;
+  }
+  
+  .action-btn {
+    padding: 8px 16px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  
+  .pin-btn {
+    background: #fff;
+    border: 1px solid var(--secondary);
+    color: var(--secondary);
+  }
+  .pin-btn.active { background: var(--secondary); color: white; }
+  
+  .info-btn { background: #f8f9fa; color: var(--primary); }
+  .serve-btn { background: var(--green); color: white; }
+  
+  /* Dashboard Styles */
+  .status-filters {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  
+  .filter-btn {
+    padding: 15px 20px;
+    border: none;
+    border-radius: 10px;
+    background: #f8f9fa;
+    text-align: left;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  
+  .filter-btn.active {
+    background: var(--secondary);
+    color: white;
+    box-shadow: 0 3px 6px rgba(33,150,243,0.2);
+  }
+  
+  .indicators {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
+  
+  .indicator-card {
+    background: white;
+    border-radius: 12px;
+    padding: 20px;
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .indicator-bar {
+    height: 4px;
+    width: 100%;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+  }
+  
+  .indicator-card.new-orders .indicator-bar { background: var(--green); }
+  .indicator-card.due-soon .indicator-bar { background: var(--yellow); }
+  .indicator-card.critical .indicator-bar { background: var(--red); }
+  
+  .home-btn {
+    margin-top: auto;
+    padding: 14px;
+    border: none;
+    border-radius: 8px;
+    background: var(--primary);
+    color: white;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  
+  .loading-text {
+    text-align: center;
+    padding: 20px;
+    color: #666;
+    grid-column: 1 / -1;
+  }
+  

@@ -176,6 +176,24 @@ body {
     background-color: #2980b9;
 }
 
+.pickup-btn {
+    padding: 8px 16px;
+    background-color: green;  /* Use your green color variable (or a hex value, e.g., #4CAF50) */
+    color: white;                    /* White text for contrast */
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-top: 10px;
+}
+
+.pickup-btn:disabled {
+    background-color: #ccc;          /* Grey background when disabled */
+    cursor: not-allowed;
+    color: #666;                     /* Optionally, use a darker grey for text */
+}
+
+
 /* Responsive */
 @media screen and (max-width: 600px) {
     .navbar {

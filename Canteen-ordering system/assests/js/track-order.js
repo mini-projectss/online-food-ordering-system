@@ -5,9 +5,9 @@ document.addEventListener("DOMContentLoaded", function () {
             return;
         }
 
-        // Calculate timestamp for 5 minutes ago
-        const fiveMinutesAgo = firebase.firestore.Timestamp.fromDate(
-            new Date(Date.now() - 5 * 60 * 1000)
+        // Calculate timestamp for 7 minutes ago (instead of 5 minutes)
+        const sevenMinutesAgo = firebase.firestore.Timestamp.fromDate(
+            new Date(Date.now() - 7 * 60 * 1000)
         );
 
         const ordersContainer = document.getElementById("orders-container");
@@ -18,10 +18,10 @@ document.addEventListener("DOMContentLoaded", function () {
             <p id="no-orders" style="text-align: center; display: none;">No recent orders found</p>
         `;
 
-        // Query orders from last 5 minutes
+        // Query orders from last 7 minutes
         const ordersQuery = db.collection("orders")
             .where("userId", "==", user.uid)
-            .where("createdAt", ">=", fiveMinutesAgo)
+            .where("createdAt", ">=", sevenMinutesAgo)
             .orderBy("createdAt", "desc");
 
         const unsubscribe = ordersQuery.onSnapshot(function(snapshot) {
@@ -40,12 +40,14 @@ document.addEventListener("DOMContentLoaded", function () {
 
             snapshot.forEach(doc => {
                 const order = doc.data();
+                // Attach the document id so that we can reference it later
+                order.id = doc.id;
                 const orderElement = createOrderElement(order);
                 ordersContent.appendChild(orderElement);
 
                 // Calculate remaining time
                 const createdAt = order.createdAt.toDate();
-                const expirationTime = createdAt.getTime() + 300000; // 5 minutes
+                const expirationTime = createdAt.getTime() + 7 * 60 * 1000; // 7 minutes window
                 const timeRemaining = expirationTime - Date.now();
 
                 if (timeRemaining > 0) {
@@ -69,6 +71,7 @@ document.addEventListener("DOMContentLoaded", function () {
             unsubscribe();
         });
     });
+
     function createOrderElement(order) {
         const element = document.createElement("div");
         element.className = "order-card";
@@ -82,9 +85,18 @@ document.addEventListener("DOMContentLoaded", function () {
         const scheduledTime = order.scheduleTime 
             ? new Date(order.scheduleTime).toLocaleString() 
             : null;
+        
+        // Determine if button should be active (if status is "serve") or disabled
+        let pickupButtonHTML = "";
+        if (order.status === "serve") {
+            pickupButtonHTML = `<button class="pickup-btn" onclick="pickUpOrder('${order.id}')">Picked Up</button>`;
+        } else {
+            // Alternatively, you could choose not to show the button at all; here it’s shown as disabled.
+            pickupButtonHTML = `<button class="pickup-btn" disabled>Picked Up</button>`;
+        }
     
         element.innerHTML = `
-            <h3>Order ID: ${order.orderId}</h3>
+            <h3>Order ID: ${order.orderId || order.id}</h3>
             <p><strong>Placed on:</strong> ${orderDate}</p>
             ${scheduledTime ? `<p><strong>Scheduled for:</strong> ${scheduledTime}</p>` : ''}
             <p><strong>Status:</strong> ${order.status || 'processing'}</p>
@@ -97,6 +109,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     <p>${item.name} (x${item.quantity}) - ₹${item.price * item.quantity}</p>
                 `).join('')}
             </div>
+            ${pickupButtonHTML}
         `;
         return element;
     }
@@ -110,3 +123,16 @@ document.addEventListener("DOMContentLoaded", function () {
         return "Payment status unknown";
     }
 });
+
+// Global function to update order status to "finished" when "Picked Up" is clicked
+function pickUpOrder(orderId) {
+    db.collection("orders").doc(orderId).update({
+        status: "finished",
+        finishedAt: new Date()
+    }).then(() => {
+        alert("Thank you! Your order has been marked as picked up.");
+    }).catch(error => {
+        console.error("Error updating order status:", error);
+        alert("There was an error updating your order. Please try again.");
+    });
+}
