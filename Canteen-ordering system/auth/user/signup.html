@@ -22,6 +22,10 @@
                     <label for="student-email">Email</label>
                     <input type="email" id="student-email" placeholder="Enter your email" required>
                 </div>
+                <div class="input-group">
+                  <label for="student-email">id</label>
+                  <input type="id" id="student-id" placeholder="Enter your Student Id" required>
+              </div>
                 
                 <div class="input-group">
                   <label for="student-phone">Phone No</label>
@@ -66,6 +70,7 @@
       e.preventDefault();
       const name = document.getElementById('student-name').value;
       const email = document.getElementById('student-email').value;
+      const id = document.getElementById('student-id').value;
       const phone = document.getElementById('student-phone').value;
       const password = document.getElementById('student-password').value;
 
@@ -80,6 +85,7 @@
           return db.collection('users').doc(userCredential.user.uid).set({
             name: name,
             email: email,
+            id: id,
             phone: phone,
             role: 'student',
             createdAt: firebase.firestore.FieldValue.serverTimestamp()

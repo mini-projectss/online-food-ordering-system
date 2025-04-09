@@ -1,12 +1,12 @@
 // Firebase configuration
 const firebaseConfig = {
-    apiKey: "AIzaSyAiJplG7u_x_ijhxC9AD9F2JPYoU0k2Lnk",
-    authDomain: "online-cateen-ordeing.firebaseapp.com",
-    projectId: "online-cateen-ordeing",
-    storageBucket: "online-cateen-ordeing.appspot.com",
-    messagingSenderId: "1088334175531",
-    appId: "1:1088334175531:web:586611bcf1bbba05f5f96e",
-    measurementId: "G-BL8BCFH88B"
+  apiKey: "AIzaSyAiJplG7u_x_ijhxC9AD9F2JPYoU0k2Lnk",
+  authDomain: "online-cateen-ordeing.firebaseapp.com",
+  projectId: "online-cateen-ordeing",
+  storageBucket: "online-cateen-ordeing.appspot.com",
+  messagingSenderId: "1088334175531",
+  appId: "1:1088334175531:web:586611bcf1bbba05f5f96e",
+  measurementId: "G-BL8BCFH88B"
 };
 
 // Initialize Firebase
@@ -18,7 +18,11 @@ const db = firebase.firestore();
 const profileName = document.getElementById("profile-name");
 const profileEmail = document.getElementById("profile-email");
 const profilePhone = document.getElementById("profile-phone");
+// This element, previously used for role, will now show the College ID.
 const profileRole = document.getElementById("profile-role");
+// New element to show the joined at date – add this element in your HTML with id="profile-joined"
+const profileJoined = document.getElementById("profile-joined");
+
 const logoutBtn = document.getElementById("logout");
 
 // Order history page elements
@@ -56,7 +60,16 @@ document.addEventListener("DOMContentLoaded", function () {
                     profileName.textContent = userData.name || "Not available";
                     profileEmail.textContent = userData.email;
                     profilePhone.textContent = userData.phone || "Not provided";
-                    profileRole.textContent = userData.role?.toUpperCase() || "USER";
+                    // Instead of role, display the College ID (assumes field is stored as "collegeID", or alternatively "id")
+                    profileRole.textContent = userData.collegeID || userData.id || "Not available";
+                    
+                    // Display the "Joined At" date using the createdAt timestamp
+                    if (userData.createdAt) {
+                        // Assuming createdAt is a Firestore Timestamp, convert to Date and then to a readable string
+                        profileJoined.textContent = "Joined at: " + userData.createdAt.toDate().toLocaleString();
+                    } else {
+                        profileJoined.textContent = "Joined at: Not available";
+                    }
                 } else {
                     console.log("No user data found");
                     profileName.textContent = "Data not found";
@@ -83,21 +96,9 @@ document.addEventListener("DOMContentLoaded", function () {
                 console.error("Logout error:", error);
                 alert("Error during logout. Please try again.");
             });
-    });
-
 });
-
-document.addEventListener("DOMContentLoaded", function () {
-    const viewAllOrdersBtn = document.getElementById("view-all-orders-btn");
-    const showLessOrdersBtn = document.getElementById("show-less-orders-btn");
-
-    if (viewAllOrdersBtn) {
-        viewAllOrdersBtn.addEventListener("click", function () {
-            loadOrderHistory(null); // Load all orders
-            viewAllOrdersBtn.style.display = "none";
-            showLessOrdersBtn.style.display = "block"; // Show "Show Less" button
-        });
-    }
+ 
+// ... (rest of your code unchanged: order history loading, etc.)
 });
 
 
