@@ -49,11 +49,19 @@ function handleOrderUpdate(snapshot) {
   // Reset criticalOrders count
   criticalOrders = 0;
   orders.forEach(order => {
-    const elapsed = Math.floor((now - order.createdAt) / 1000);
-    order.timer = 420 - elapsed; // 7-minute timer
-    if (order.timer < 180) {
+    if (order.status === "processing") {
+      const elapsed = Math.floor((now - order.createdAt) / 1000);
+      order.timer = 420 - elapsed;
+    } else if ((order.status === "serve" || order.status === "finished") && typeof order.servedTimer !== "undefined") {
+      order.timer = order.servedTimer;
+    } else {
+      order.timer = 0;
+    }
+  
+    if (order.timer < 180 && order.status === "processing") {
       criticalOrders++;
     }
+  
     order.cart = order.cart.map(item => {
       if (typeof item.ready === "undefined") {
         item.ready = false;
@@ -61,7 +69,7 @@ function handleOrderUpdate(snapshot) {
       return item;
     });
   });
-  
+    
   updateIndicators();
   renderOrders();
 }
@@ -198,11 +206,20 @@ async function togglePin(orderId) {
 
 // Mark an order as served by updating its status and timestamp
 async function serveOrder(orderId) {
+  const order = orders.find(o => o.id === orderId);
+  if (!order) return;
+
+  const now = new Date();
+  const elapsed = Math.floor((now - order.createdAt) / 1000);
+  const servedTimer = 420 - elapsed;
+
   await db.collection("orders").doc(orderId).update({
     status: "serve",
-    servedAt: new Date()
+    servedAt: now,
+    servedTimer: servedTimer
   });
 }
+
 
 // Show order information including user name (fetched from "users" collection)
 async function showInfo(orderId) {
@@ -260,9 +277,13 @@ document.addEventListener('DOMContentLoaded', () => {
   setInterval(() => {
     const now = new Date();
     orders.forEach(order => {
-      const elapsed = Math.floor((now - order.createdAt) / 1000);
-      order.timer = 420 - elapsed;
+      if (order.status === "processing") {
+        const elapsed = Math.floor((now - order.createdAt) / 1000);
+        order.timer = 420 - elapsed;
+      }
+      // Don't update timer if it's not processing
     });
+    
     updateIndicators();
     renderOrders();
   }, 1000);
