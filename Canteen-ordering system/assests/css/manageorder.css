@@ -27,7 +27,7 @@
   
   .dashboard {
     width: 320px;
-    background: white;
+    background: linear-gradient(to bottom right, #a2c2f0, #e6f0fc);
     padding: 20px;
     box-shadow: 2px 0 10px rgba(0,0,0,0.1);
     display: flex;
@@ -38,7 +38,7 @@
   .orders-container {
     flex: 1;
     padding: 25px;
-    background: #f8f9fa;
+    background: linear-gradient(to bottom right, #a2c2f0, #e6f0fc);
   }
   
   .orders-grid {
