@@ -270,6 +270,23 @@ select:focus {
   color: #666;
 }
 
+/* Most Ordered Items Card */
+#most-ordered-items .card {
+  background: #fff;
+  color: #333;
+  padding: 15px;
+  border-radius: 10px;
+  text-align: center;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+#most-ordered-items img {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+  border-radius: 8px;
+  margin-bottom: 10px;
+}
+
 /* Animations for Elements */
 @keyframes fadeIn {
   from {

@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Admin Dashboard</title>
-  <link rel="stylesheet" href="../assests/css/dashboard.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="../assests/css/dashboard.css"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
 </head>
 <body>
   <div class="dashboard-container">
@@ -16,10 +16,10 @@
         <h3>Kitchen Orders</h3>
         <i class="fas fa-chevron-right"></i>
         <p>Go to Manage Orders</p>
-    </a>
+      </a>
       <div class="card" id="student-count">
         <h3>Customers</h3>
-        <p>Loading...</p>
+        <p>18</p>
       </div>
       <div class="card" id="active-orders">
         <h3>Active Orders</h3>
@@ -53,6 +53,13 @@
       <button id="view-orders-btn" onclick="fetchOrderHistory()">View Orders</button>
       <div class="order-cards-container" id="order-cards-container">
         <div class="loading-text">Orders will appear here...</div>
+      </div>
+    </div>
+
+    <div class="month-order-stats">
+      <h3>Most Ordered Items</h3>
+      <div id="most-ordered-items" class="order-cards-container">
+        <div class="loading-text">Data will appear here...</div>
       </div>
     </div>
   </div>
