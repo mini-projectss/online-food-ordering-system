@@ -40,6 +40,8 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   });
   
+
+  
   function createOrderElement(order) {
     const element = document.createElement("div");
     element.className = "order-card";
