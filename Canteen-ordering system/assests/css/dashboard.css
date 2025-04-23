@@ -23,7 +23,24 @@ h1 {
   font-weight: 600;
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
 }
+/* Logout Button Styles */
+.logout-button {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background-color: #ff4d4d;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 1em;
+  transition: background-color 0.3s ease;
+}
 
+.logout-button:hover {
+  background-color: #ff3333;
+}
 /* Card Section */
 .top-cards,
 .revenue-cards {

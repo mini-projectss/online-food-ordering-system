@@ -228,4 +228,12 @@ const firebaseConfig = {
     `;
     return card;
   }
-  
+  // Logout function
+function logout() {
+  firebase.auth().signOut().then(() => {
+      alert("You have successfully logged out.");
+      window.location.href = "../auth/admin/login.html"; // Redirect to login page
+  }).catch((error) => {
+      alert("Error logging out: " + error.message);
+  });
+}
