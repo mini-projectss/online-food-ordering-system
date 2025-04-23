@@ -1,30 +1,64 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Admin Dashboard</title>
-    <link rel="stylesheet" href="manage-order.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard</title>
+  <link rel="stylesheet" href="../assests/css/dashboard.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
-    <div class="container">
-        <!-- Reuse the same sidebar from manage-order -->
-        <div class="dashboard">
-            <div class="status-filters">
-                <!-- Add dashboard-specific content -->
-                <h2>Admin Dashboard</h2>
-                <!-- Add statistics or other admin features -->
-            </div>
-            <button class="home-btn" onclick="window.location.href='manage-order.html'">
-                <i class="fas fa-utensils"></i> Kitchen View
-            </button>
-        </div>
-        
-        <div class="orders-container">
-            <!-- Add dashboard-specific content -->
-            <h1>Admin Statistics</h1>
-            <!-- Add charts/graphs/statistics here -->
-        </div>
+  <div class="dashboard-container">
+    <h1>Admin Dashboard</h1>
+
+    <div class="top-cards">
+      <a href="manage-order.html" class="card navigate-card">
+        <h3>Kitchen Orders</h3>
+        <p>Go to Manage Orders</p>
+      </a>
+      <div class="card" id="student-count">
+        <h3>Customers</h3>
+        <p>Loading...</p>
+      </div>
+      <div class="card" id="active-orders">
+        <h3>Active Orders</h3>
+        <p>Loading...</p>
+      </div>
     </div>
-    
-    <script src="manage-order.js"></script>
+
+    <div class="revenue-cards">
+      <div class="card" id="revenue-today">
+        <h3>Revenue Today</h3>
+        <p>Loading...</p>
+      </div>
+      <div class="card" id="revenue-month">
+        <h3>Revenue This Month</h3>
+        <p>Loading...</p>
+      </div>
+    </div>
+
+    <div class="month-selectors">
+      <h3>Check Revenue by Month</h3>
+      <select id="rev-month"></select>
+      <select id="rev-year"></select>
+      <button onclick="fetchMonthlyRevenue()">Check</button>
+      <p id="revenue-result"></p>
+    </div>
+
+    <div class="month-order-history">
+      <h3>Order History (Month)</h3>
+      <select id="history-month"></select>
+      <select id="history-year"></select>
+      <button onclick="fetchOrderHistory()">View Orders</button>
+      <div class="order-cards-container" id="order-cards-container">
+        <div class="loading-text">Orders will appear here...</div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+  <script src="../assests/js/dashboard.js"></script>
 </body>
 </html>
