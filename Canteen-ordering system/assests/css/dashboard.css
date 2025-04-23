@@ -1,178 +1,288 @@
-/* dashboard.css */
+/* Global Styles */
 body {
-    font-family: 'Segoe UI', sans-serif;
-    background: #f4f6f8;
-    margin: 0;
-    padding: 0;
-    color: #333;
+  font-family: 'Segoe UI', sans-serif;
+  background: linear-gradient(to bottom right, #a2c2f0, #e6f0fc); /* Light blue gradient background */
+  margin: 0;
+  padding: 0;
+  color: #333;
+}
+
+.dashboard-container {
+  max-width: 1200px;
+  margin: auto;
+  padding: 30px;
+}
+
+/* Header Styles */
+h1 {
+  text-align: center;
+  margin-bottom: 30px;
+  font-size: 3em;
+  color: #333;
+  letter-spacing: 1px;
+  font-weight: 600;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Card Section */
+.top-cards,
+.revenue-cards {
+  display: flex;
+  gap: 20px;
+  margin-bottom: 30px;
+}
+
+/* Card Styling */
+.card {
+  background: linear-gradient(145deg, #4c9fd8, #1e74b8); /* Blue gradient for all cards */
+  border-radius: 12px;
+  padding: 20px;
+  flex: 1;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  transition: all 0.3s ease;
+  transform: scale(1);
+  opacity: 0.9;
+  color: white; /* Ensures text is visible against the blue background */
+}
+
+/* Hover Effect for Cards */
+.card:hover {
+  transform: scale(1.05);
+  box-shadow: 0 15px 25px rgba(0, 0, 0, 0.2);
+  opacity: 1;
+}
+
+/* Navigation Card (Go to Manage Orders) */
+.navigate-card {
+  text-decoration: none;
+  color: inherit;
+  transition: all 0.3s ease;
+}
+
+.navigate-card:hover {
+  color: #fff;
+  transform: translateY(-2px);
+}
+
+/* Add arrow next to the Kitchen Orders title */
+.navigate-card h3 {
+  display: inline-block;
+  position: relative;
+  padding-right: 30px; /* Space for the arrow */
+}
+
+.arrow {
+  font-size: 24px; /* Adjust size of arrow */
+  font-weight: bold; /* Make it bold for prominence */
+  color: #ffd700; /* Choose the arrow color */
+  position: absolute; /* Position it relative to the card */
+  top: 60px; /* Position from the top of the card */
+  right: 10px; /* Position from the right of the card */
+  transition: transform 0.3s ease;
+}
+
+/* Hover effect for the arrow */
+.navigate-card:hover .arrow {
+  transform: translateX(10px); /* Move the arrow slightly to the right */
+  color: #ff5733; /* Change the color on hover to make it even more noticeable */
+}
+
+/* Optional: Pulsing effect for the arrow */
+.navigate-card:hover .arrow {
+  animation: pulse 1s infinite;
+}
+
+/* Pulsing animation for arrow */
+@keyframes pulse {
+  0% {
+    transform: translateX(10px) scale(1);
   }
-  
-  .dashboard-container {
-    max-width: 1200px;
-    margin: auto;
-    padding: 30px;
+  50% {
+    transform: translateX(10px) scale(1.2); /* Slightly enlarge on hover */
   }
-  
-  dashboard-container h1 {
-    text-align: center;
-    margin-bottom: 30px;
-    font-size: 2.5em;
-    color: #333;
+  100% {
+    transform: translateX(10px) scale(1);
   }
-  
-  .top-cards,
-  .revenue-cards {
-    display: flex;
-    gap: 20px;
-    margin-bottom: 30px;
+}
+
+/* Month Selectors and Button Styles */
+.month-selectors,
+.month-order-history {
+  margin-top: 40px;
+  background: #fff;
+  padding: 25px;
+  border-radius: 12px;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
+
+.month-selectors h3,
+.month-order-history h3 {
+  margin-bottom: 15px;
+  font-size: 1.4em;
+  color: #444;
+  font-weight: 600;
+}
+
+/* Select and Button Styling */
+select, button {
+  padding: 12px 20px;
+  margin-right: 15px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 1.1em;
+  transition: all 0.3s ease;
+}
+
+/* Button Hover and Focus */
+button {
+  background: linear-gradient(135deg, #1f76b6, #156a8d); /* Blue gradient */
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border: none;
+  transition: all 0.3s ease;
+}
+
+button:hover {
+  background: linear-gradient(135deg, #156a8d, #1f76b6); /* Slight hover effect for blue */
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  transform: scale(1.05);
+}
+
+button:focus {
+  outline: none;
+  border: 2px solid #333;
+}
+
+/* Select Element Styling */
+select {
+  background-color: #f0f4f8;
+  border-color: #ddd;
+  transition: background-color 0.3s ease;
+}
+
+select:hover {
+  background-color: #e2e8f0;
+}
+
+select:focus {
+  background-color: #d1e8f0;
+  border-color: #1f76b6;
+  outline: none;
+}
+
+/* Revenue Results */
+#revenue-result {
+  margin-top: 15px;
+  font-size: 1.3em;
+  color: #444;
+  font-weight: 600;
+}
+
+/* Order Cards Container */
+.order-cards-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 20px;
+  max-height: 600px;
+  overflow-y: auto;
+  padding: 10px;
+  margin: 20px 0;
+}
+
+/* Order Card Styling */
+.order-card {
+  background: linear-gradient(145deg, #8ab9e6, #5fa7d7); /* Lighter blue gradient for order cards */
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  color: white; /* Ensures text is visible against the lighter blue background */
+}
+
+.order-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+}
+
+.order-header {
+  border-bottom: 2px solid #eee;
+  padding-bottom: 15px;
+  margin-bottom: 15px;
+}
+
+.order-id {
+  color: #333; /* Darker color for order ID */
+  font-size: 0.9em;
+  margin-bottom: 8px;
+}
+
+.order-date {
+  color: #444; /* Darker color for order date */
+  font-size: 0.85em;
+}
+
+.order-items {
+  list-style: none;
+  margin: 15px 0;
+}
+
+.order-item {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+  padding: 8px 0;
+  border-bottom: 1px solid #f5f5f5;
+}
+
+.item-name {
+  flex: 2;
+  color: #333; /* Darker color for item names */
+}
+
+.item-qty {
+  flex: 1;
+  text-align: center;
+  color: #444; /* Darker color for item quantity */
+}
+
+.item-price {
+  flex: 1;
+  text-align: right;
+  color: #333; /* Darker color for item price */
+}
+
+.order-total {
+  font-weight: bold;
+  text-align: right;
+  margin-top: 15px;
+  padding-top: 15px;
+  border-top: 2px solid #eee;
+  color: #333; /* Darker color for the total */
+}
+
+/* Loading Text */
+.loading-text {
+  text-align: center;
+  padding: 20px;
+  color: #666;
+}
+
+/* Animations for Elements */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
   }
-  
-  .card {
-    background: white;
-    border-radius: 12px;
-    padding: 20px;
-    flex: 1;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-    text-align: center;
-    transition: all 0.3s ease;
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
-  
-  .card:hover {
-    transform: translateY(-2px);
-  }
-  
-  .card h3 {
-    margin-bottom: 10px;
-    font-size: 1.3em;
-    color: #444;
-  }
-  
-  .card p {
-    font-size: 1.1em;
-    color: #666;
-  }
-  
-  .navigate-card {
-    text-decoration: none;
-    color: inherit;
-  }
-  
-  .month-selectors,
-  .month-order-history {
-    margin-top: 40px;
-    background: white;
-    padding: 20px;
-    border-radius: 12px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-  }
-  
-  .month-selectors h3,
-  .month-order-history h3 {
-    margin-bottom: 15px;
-  }
-  
-  select, button {
-    padding: 10px 16px;
-    margin-right: 10px;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    font-size: 1em;
-  }
-  
-  button {
-    background-color: #06d6a0;
-    color: white;
-    font-weight: 600;
-    cursor: pointer;
-  }
-  
-  button:hover {
-    background-color: #05c393;
-  }
-  
-  #revenue-result {
-    margin-top: 15px;
-    font-size: 1.2em;
-    color: #444;
-  }
-  
-  .order-cards-container {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 20px;
-    max-height: 600px;
-    overflow-y: auto;
-    padding: 10px;
-    margin: 20px 0;
-  }
-  
-  .order-card {
-    background: #fff;
-    border-radius: 12px;
-    padding: 20px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    transition: transform 0.2s;
-  }
-  
-  .order-card:hover {
-    transform: translateY(-2px);
-  }
-  
-  .order-header {
-    border-bottom: 2px solid #eee;
-    padding-bottom: 15px;
-    margin-bottom: 15px;
-  }
-  
-  .order-id {
-    color: #666;
-    font-size: 0.9em;
-    margin-bottom: 8px;
-  }
-  
-  .order-date {
-    color: #888;
-    font-size: 0.85em;
-  }
-  
-  .order-items {
-    list-style: none;
-    margin: 15px 0;
-  }
-  
-  .order-item {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 10px;
-    padding: 8px 0;
-    border-bottom: 1px solid #f5f5f5;
-  }
-  
-  .item-name {
-    flex: 2;
-  }
-  
-  .item-qty {
-    flex: 1;
-    text-align: center;
-  }
-  
-  .item-price {
-    flex: 1;
-    text-align: right;
-  }
-  
-  .order-total {
-    font-weight: bold;
-    text-align: right;
-    margin-top: 15px;
-    padding-top: 15px;
-    border-top: 2px solid #eee;
-  }
-  
-  .loading-text {
-    text-align: center;
-    padding: 20px;
-    color: #666;
-  }
-  
+}
+
+/* Apply FadeIn Animation to Cards */
+.card, .month-selectors, .month-order-history, .order-card {
+  animation: fadeIn 0.8s ease-out;
+}
