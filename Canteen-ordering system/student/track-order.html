@@ -6,7 +6,6 @@
     <title>Order Status | College Canteen</title>
     <link rel="stylesheet" href="../assests/css/track-order.css">
     <style>
-        /* Add these styles at the top */
         .orders-list {
             max-height: 400px;
             overflow-y: auto;
@@ -15,7 +14,7 @@
             padding: 15px;
             margin: 20px 0;
         }
-        
+
         .order-card {
             background: white;
             padding: 15px;
@@ -23,20 +22,37 @@
             border-radius: 8px;
             box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
-        
+
         .order-card h3 {
             margin-top: 0;
             color: #333;
         }
-        
+
         .order-items p {
             margin: 5px 0;
+            color: #666;
+        }
+
+        .cancel-btn {
+            padding: 8px 16px;
+            background-color: #f44336;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 10px;
+            margin-left: 10px;
+        }
+
+        .cancel-btn:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
             color: #666;
         }
     </style>
 </head>
 <body>
-    <!-- Navbar (keep your existing navbar) -->
     <nav class="navbar">
         <div class="logo">Canteen 🍽️</div>
         <div class="hamburger" onclick="toggleMenu()">☰</div>
@@ -56,7 +72,6 @@
         </ul>
     </nav>
 
-    <!-- Updated Track Order Container -->
     <div class="track-order-container">
         <h2>📦 Your Recent Orders</h2>
         <div id="orders-container">
@@ -65,34 +80,26 @@
         <a href="menu.html" class="back-btn">Back to Menu</a>
     </div>
 
-    <!-- Firebase and other scripts -->
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
-    
+
     <script>
-      // Your Firebase configuration (replace with your actual Firebase config)
       var firebaseConfig = {
         apiKey: "AIzaSyAiJplG7u_x_ijhxC9AD9F2JPYoU0k2Lnk",
-    authDomain: "online-cateen-ordeing.firebaseapp.com",
-    projectId: "online-cateen-ordeing",
-    storageBucket: "online-cateen-ordeing.firebasestorage.app",
-    messagingSenderId: "1088334175531",
-    appId: "1:1088334175531:web:586611bcf1bbba05f5f96e",
-    measurementId: "G-BL8BCFH88B"
+        authDomain: "online-cateen-ordeing.firebaseapp.com",
+        projectId: "online-cateen-ordeing",
+        storageBucket: "online-cateen-ordeing.firebasestorage.app",
+        messagingSenderId: "1088334175531",
+        appId: "1:1088334175531:web:586611bcf1bbba05f5f96e",
+        measurementId: "G-BL8BCFH88B"
       };
-    
-      // Initialize Firebase
+
       firebase.initializeApp(firebaseConfig);
-    
-      // Create global variables for auth and database
       const auth = firebase.auth();
       const db = firebase.firestore();
     </script>
-    
-    <!-- Add this new track-order.js script -->
-    <script src="../assests/js/track-order.js"></script>
 
-    
+    <script src="../assests/js/track-order.js"></script>
 </body>
 </html>

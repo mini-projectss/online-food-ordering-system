@@ -110,15 +110,16 @@ function loadOrderHistory(limit = null) {
         if (user) {
             let ordersRef = db.collection("orders")
                 .where("userId", "==", user.uid)
+                .where("status", "==", "finished")  // ✅ Only finished orders
                 .orderBy("createdAt", "desc");
 
             if (limit) ordersRef = ordersRef.limit(limit);
 
             ordersRef.get().then(querySnapshot => {
                 container.innerHTML = "";
-                
+
                 if (querySnapshot.empty) {
-                    container.innerHTML = '<div class="loading-text">No orders found</div>';
+                    container.innerHTML = '<div class="loading-text">No finished orders found</div>';
                     return;
                 }
 
@@ -135,6 +136,7 @@ function loadOrderHistory(limit = null) {
         }
     });
 }
+
 
 function createOrderCard(order, orderDate) {
     const card = document.createElement("div");

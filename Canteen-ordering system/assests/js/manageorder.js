@@ -246,18 +246,19 @@ User: ${userName}`);
 
 // Update sidebar counts and indicator cards
 function updateIndicators() {
-  // Sidebar counts (all orders regardless of creation date)
+  const todayStr = new Date().toLocaleDateString();
+
+  const todayFinished = orders.filter(o => o.status === 'finished' && o.createdAt.toLocaleDateString() === todayStr);
   document.getElementById("activeCount").textContent = orders.filter(o => o.status === 'processing').length;
   document.getElementById("serveCount").textContent = orders.filter(o => o.status === 'serve').length;
-  document.getElementById("finishedCount").textContent = orders.filter(o => o.status === 'finished').length;
+  document.getElementById("finishedCount").textContent = todayFinished.length;
   document.getElementById("pinnedCount").textContent = orders.filter(o => o.pinned).length;
-  
-  // Indicators: Only count "active" orders (status processing)
+
   const activeOrders = orders.filter(o => o.status === "processing");
   const newOrdersCount = activeOrders.filter(o => o.timer > 300).length;
   const dueSoonCount = activeOrders.filter(o => o.timer <= 300 && o.timer > 180).length;
   const criticalCount = activeOrders.filter(o => o.timer <= 180).length;
-  
+
   document.getElementById("newOrdersIndicator").textContent = newOrdersCount;
   document.getElementById("dueSoonIndicator").textContent = dueSoonCount;
   document.getElementById("criticalIndicator").textContent = criticalCount;
