@@ -19,12 +19,6 @@ const razorpay = new Razorpay({
   key_id: process.env.RAZORPAY_KEY_ID,
   key_secret: process.env.RAZORPAY_KEY_SECRET
 });
-
-// Root route (required for Vercel)
-app.get("/", (req, res) => {
-  res.status(200).send("Welcome to the Online Food Ordering System!");
-});
-
 // Create Order Endpoint
 app.post("/create-order", async (req, res) => {
   try {
@@ -35,7 +29,7 @@ app.post("/create-order", async (req, res) => {
     const options = {
       amount: amount * 100, // Convert ₹ to paise
       currency: "INR",
-      receipt: `order_${Date.now()}`
+      receipt: order_${Date.now()}
     };
     const order = await razorpay.orders.create(options);
     res.status(200).json(order);
@@ -46,4 +40,4 @@ app.post("/create-order", async (req, res) => {
 });
 // Start Server
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+app.listen(PORT, () => console.log(Server running on port ${PORT}));
